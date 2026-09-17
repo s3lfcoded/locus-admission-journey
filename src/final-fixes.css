@@ -6,3 +6,10 @@
 .primary.demo-hover{background:#1b50c5}.primary.demo-active,.primary:active:not(:disabled){background:#1745ac}
 .eyebrow,.page-top>span,footer,.micro,.range-labels{color:#607393}nav button{color:#5d7094}.category small{color:#617185}
 @media(min-width:1051px){.route-0{left:12%}.route-1{left:6%}.route-2{left:0}}
+
+.lang-switch{display:inline-flex;align-items:center;background:#edf2f7;border:1px solid #d9e2ec;border-radius:10px;padding:3px;gap:2px}
+.lang-btn{padding:5px 9px;border-radius:7px;font-size:11px;font-weight:600;color:#61738d;transition:all .15s ease;border:0;background:transparent;cursor:pointer;letter-spacing:.4px;line-height:1}
+.lang-btn:hover{color:#07163d}
+.lang-btn.active{background:#ffffff;color:var(--blue);font-weight:700;box-shadow:0 1px 3px rgba(15,23,42,.08)}
+@media(max-width:760px){.lang-switch{padding:2px}.lang-btn{padding:4px 7px;font-size:10px}}
+
