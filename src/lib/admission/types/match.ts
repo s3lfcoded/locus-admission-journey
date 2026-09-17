@@ -18,7 +18,8 @@ export interface Blocker {
     | 'study_form_not_allowed'
     | 'degree_level_not_allowed'
     | 'tuition_too_expensive'
-    | 'no_dormitory';
+    | 'no_dormitory'
+    | 'quota_not_available';
   readonly message: string;
   readonly exam?: ExamCode;
 }

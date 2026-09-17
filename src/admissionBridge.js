@@ -1,4 +1,4 @@
-﻿import {
+import {
   matchPrograms,
   matchInstitutions,
   buildRoadmap,
@@ -15,6 +15,7 @@ const FIELD_MAP = {
   IT: 'it',
   Инженерия: 'engineering',
   Бизнес: 'management',
+  Экономика: 'economics',
   Медицина: 'medicine',
   Право: 'law',
   Дизайн: 'design',
@@ -37,6 +38,7 @@ export function buildEngineProfile({
   sat = '',
   budget = 3000,
   countries = ['Казахстан', 'Италия'],
+  achievements = [],
 }) {
   const fields = (interests || []).map((i) => FIELD_MAP[i] || 'it');
   const targetCountries = (countries || []).map((c) => COUNTRY_MAP[c] || 'KZ');
@@ -56,6 +58,8 @@ export function buildEngineProfile({
     entProfilePair = ['ent_biology', 'ent_chemistry'];
   } else if (fields.includes('engineering')) {
     entProfilePair = ['ent_mathematics', 'ent_physics'];
+  } else if (fields.includes('economics') || fields.includes('management')) {
+    entProfilePair = ['ent_mathematics', 'ent_geography'];
   } else if (fields.includes('law')) {
     entProfilePair = ['ent_world_history', 'ent_human_society_law'];
   }
@@ -79,6 +83,7 @@ export function buildEngineProfile({
   return {
     examScores,
     entProfilePair,
+    achievements: achievements || [],
     preferences: {
       fields: fields.length ? fields : ['it'],
       countries: targetCountries.length ? targetCountries : ['KZ', 'IT'],

@@ -1,3 +1,4 @@
+import { achievementPriority } from '../types/applicant';
 import type { ApplicantProfile } from '../types/applicant';
 import {
   COUNTRY_TITLES, LANGUAGE_TITLES, RELATED_FIELDS, STUDY_FIELD_TITLES,
@@ -59,7 +60,7 @@ function scoreAffordability(
   if (tuition === null) return freeChance;
 
   const limit = profile.preferences.maxTuitionPerYear;
-  if (limit == null) return 0.7;
+  if (limit === null) return 0.7;
 
   const limitUsd = toUsd(limit, fx);
   const tuitionUsd = toUsd(tuition, fx);
@@ -134,6 +135,7 @@ export function scoreProgram(
 ): MatchResult {
   const { program, institution } = entry;
 
+  const tiebreakPriority = achievementPriority(profile.achievements);
   const openTracks: OpenTrack[] = [];
   const closedTracks: { track: (typeof program.tracks)[number]; blockers: ReturnType<typeof evaluateTrack>['blockers'] }[] = [];
 
@@ -143,7 +145,11 @@ export function scoreProgram(
       closedTracks.push({ track, blockers });
       continue;
     }
-    openTracks.push({ track, applicantScore, chance: estimateTrackChance(track, applicantScore) });
+    openTracks.push({
+      track,
+      applicantScore,
+      chance: estimateTrackChance(track, applicantScore, { tiebreakPriority }),
+    });
   }
 
   // Порядок траекторий — это ответ на вопрос «куда мне реально идти».

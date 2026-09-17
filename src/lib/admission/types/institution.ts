@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { achievementKindSchema } from './achievements';
 import { examCodeSchema } from './exams';
 import { moneySchema } from './money';
 import { provenanceSchema } from './sources';
@@ -111,6 +112,15 @@ export const admissionTrackSchema = z
     anyOf: z.array(z.array(examRequirementSchema).min(2)).default([]),
     /** Пара профильных предметов ЕНТ, которую принимает вуз на эту программу. */
     entProfilePair: z.tuple([examCodeSchema, examCodeSchema]).optional(),
+    /**
+     * Траектория доступна только обладателям этого статуса.
+     *
+     * Так описываются квотные конкурсы: сельская квота — это не надбавка к
+     * баллу, а отдельный пул мест со своим, обычно более низким проходным.
+     */
+    requiresAchievement: achievementKindSchema.optional(),
+    /** Доля мест, выделенная под квоту, в процентах от общего числа грантов. */
+    quotaSharePercent: z.number().min(0).max(100).optional(),
     /** Минимальный суммарный балл ЕНТ (из 140). */
     entMinTotal: z.number().int().min(0).max(140).optional(),
     /**
@@ -129,6 +139,12 @@ export const admissionTrackSchema = z
     }
     if (track.kind !== 'ent' && track.entMinTotal !== undefined) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Трек ${track.id} не по ЕНТ, но задан entMinTotal` });
+    }
+    if (track.quotaSharePercent !== undefined && track.requiresAchievement === undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Трек ${track.id}: указана доля квоты, но не указано, кому она доступна`,
+      });
     }
     if (track.kind !== 'ent' && track.lastPassingScore !== null && track.scoreExam === undefined) {
       ctx.addIssue({

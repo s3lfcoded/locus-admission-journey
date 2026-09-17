@@ -2,6 +2,7 @@ import {
   ENT_CORE_EXAMS, ENT_PROFILE_THRESHOLD, ENT_SUBJECT_THRESHOLDS, EXAMS, examTitle,
   type ExamCode,
 } from '../types/exams';
+import { ACHIEVEMENT_TITLES } from '../types/achievements';
 import type { ApplicantProfile } from '../types/applicant';
 import {
   COUNTRY_TITLES, DEGREE_LEVEL_TITLES, FUNDING_TITLES, LANGUAGE_TITLES, STUDY_FORM_TITLES,
@@ -87,6 +88,15 @@ export interface TrackEvaluation {
 export function evaluateTrack(profile: ApplicantProfile, track: AdmissionTrack): TrackEvaluation {
   const blockers: Blocker[] = [];
 
+  // Квотный конкурс закрыт для тех, у кого нет соответствующего статуса.
+  const required = track.requiresAchievement;
+  if (required !== undefined && !profile.achievements.includes(required)) {
+    blockers.push({
+      code: 'quota_not_available',
+      message: `Конкурс только для категории «${ACHIEVEMENT_TITLES[required]}»`,
+    });
+  }
+
   for (const requirement of track.required) {
     const blocker = checkRequirement(profile, requirement);
     if (blocker !== null) blockers.push(blocker);
@@ -155,14 +165,8 @@ export function checkPreferences(
   const blockers: Blocker[] = [];
   const prefs = profile.preferences;
 
-  const countries = prefs.countries ?? [];
-  const cities = prefs.cities ?? [];
-  const languages = prefs.languages ?? [];
-  const studyForms = prefs.studyForms ?? [];
-  const degreeLevels = prefs.degreeLevels ?? [];
-
-  const countryAllowed = countries.length === 0 || countries.includes(institution.country);
-  const cityAllowed = cities.length === 0 || cities.includes(institution.city);
+  const countryAllowed = prefs.countries.length === 0 || prefs.countries.includes(institution.country);
+  const cityAllowed = prefs.cities.length === 0 || prefs.cities.includes(institution.city);
 
   if (!countryAllowed && !prefs.willingToRelocate) {
     blockers.push({
@@ -174,25 +178,24 @@ export function checkPreferences(
     blockers.push({ code: 'city_not_allowed', message: `${institution.city} — не тот город, и переезд не рассматривается` });
   }
 
-  if (languages.length > 0 && !program.languages.some((lang) => languages.includes(lang))) {
+  if (prefs.languages.length > 0 && !program.languages.some((lang) => prefs.languages.includes(lang))) {
     blockers.push({
       code: 'language_not_allowed',
       message: `Обучение на языке: ${program.languages.map((l) => LANGUAGE_TITLES[l]).join(', ')}`,
     });
   }
 
-  if (studyForms.length > 0 && !studyForms.includes(program.studyForm)) {
+  if (prefs.studyForms.length > 0 && !prefs.studyForms.includes(program.studyForm)) {
     blockers.push({ code: 'study_form_not_allowed', message: `Форма обучения «${STUDY_FORM_TITLES[program.studyForm]}» не выбрана` });
   }
 
-  if (degreeLevels.length > 0 && !degreeLevels.includes(program.degreeLevel)) {
+  if (prefs.degreeLevels.length > 0 && !prefs.degreeLevels.includes(program.degreeLevel)) {
     blockers.push({ code: 'degree_level_not_allowed', message: `Уровень «${DEGREE_LEVEL_TITLES[program.degreeLevel]}» не выбран` });
   }
 
-  const fundingTypes = prefs.fundingTypes ?? [];
-  if (fundingTypes.length > 0) {
+  if (prefs.fundingTypes.length > 0) {
     const available = program.tracks.map((track) => track.fundingType);
-    if (!available.some((funding) => fundingTypes.includes(funding))) {
+    if (!available.some((funding) => prefs.fundingTypes.includes(funding))) {
       blockers.push({
         code: 'funding_not_allowed',
         message: `Доступно только: ${[...new Set(available)].map((f) => FUNDING_TITLES[f]).join(', ')}`,
@@ -204,7 +207,7 @@ export function checkPreferences(
   const hasFreeTrack = program.tracks.some((track) => track.fundingType !== 'paid');
   const limit = prefs.maxTuitionPerYear;
   const tuition = program.tuitionPerYear;
-  if (!hasFreeTrack && limit != null && tuition != null && toUsd(tuition, fx) > toUsd(limit, fx)) {
+  if (!hasFreeTrack && limit !== null && tuition !== null && toUsd(tuition, fx) > toUsd(limit, fx)) {
     blockers.push({
       code: 'tuition_too_expensive',
       message: `Только платное за ${formatMoney(tuition)} в год при лимите ${formatMoney(limit)}`,
