@@ -6,14 +6,14 @@ import { provenanceSchema } from './sources';
 const idSchema = z.string().min(2).regex(/^[a-z0-9][a-z0-9-]*$/, 'id — kebab-case латиницей');
 
 /** Страны, которые рассматривает абитуриент Центральной Азии. */
-export const COUNTRIES = ['KZ', 'RU', 'KG', 'UZ', 'TR', 'DE', 'KR', 'US', 'GB', 'CN', 'AE', 'CZ', 'PL'] as const;
+export const COUNTRIES = ['KZ', 'RU', 'KG', 'UZ', 'TR', 'DE', 'KR', 'US', 'GB', 'CN', 'AE', 'CZ', 'PL', 'IT'] as const;
 export const countrySchema = z.enum(COUNTRIES);
 export type Country = z.infer<typeof countrySchema>;
 
 export const COUNTRY_TITLES: Readonly<Record<Country, string>> = {
   KZ: 'Казахстан', RU: 'Россия', KG: 'Кыргызстан', UZ: 'Узбекистан', TR: 'Турция',
   DE: 'Германия', KR: 'Южная Корея', US: 'США', GB: 'Великобритания', CN: 'Китай',
-  AE: 'ОАЭ', CZ: 'Чехия', PL: 'Польша',
+  AE: 'ОАЭ', CZ: 'Чехия', PL: 'Польша', IT: 'Италия',
 };
 
 /** Язык обучения — для Казахстана это реальный фильтр, а не деталь. */
