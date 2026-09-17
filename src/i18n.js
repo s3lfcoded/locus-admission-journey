@@ -125,6 +125,8 @@ export const TRANSLATIONS = {
       sideDeadline: 'Дедлайн подачи · пример',
       sideNextBtn: 'Моё следующее действие',
       sideChangeUni: 'Изменить целевой вуз',
+      exportCalendar: 'Синхронизировать с календарём (.ics)',
+      calendarSaved: 'Календарь .ics с 6 дедлайнами успешно сохранён!',
     },
     step6: {
       eyebrow: 'МАЛЕНЬКИЙ ШАГ. БОЛЬШОЕ БУДУЩЕЕ.',
@@ -267,6 +269,8 @@ export const TRANSLATIONS = {
       sideDeadline: 'Өтініш беру мерзімі · үлгі',
       sideNextBtn: 'Менің келесі әрекетім',
       sideChangeUni: 'Мақсатты университетті ауыстыру',
+      exportCalendar: 'Күнтізбеге экспорттау (.ics)',
+      calendarSaved: '6 дедлайн жазылған .ics күнтізбесі сәтті жүктелді!',
     },
     step6: {
       eyebrow: 'КІШКЕНТАЙ ҚАДАМ. ҮЛКЕН БОЛАШАҚ.',
@@ -409,6 +413,8 @@ export const TRANSLATIONS = {
       sideDeadline: 'Application deadline · example',
       sideNextBtn: 'My Next Action',
       sideChangeUni: 'Change target university',
+      exportCalendar: 'Sync with Calendar (.ics)',
+      calendarSaved: 'Calendar .ics file with 6 admission dates downloaded!',
     },
     step6: {
       eyebrow: 'SMALL STEP. BIG FUTURE.',
