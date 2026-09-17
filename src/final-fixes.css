@@ -1,0 +1,8 @@
+@media(min-width:761px){.landing{grid-template-columns:minmax(0,1.17fr) minmax(0,1fr)}.hero-copy h1{width:830px}}
+@media(min-width:1051px){.page-top{display:none}.workspace{padding-top:12px}.page-title{margin-bottom:22px}.timeline .task{padding:8px 0;min-height:83px}.task-content{padding-bottom:7px}.task-meta{margin-bottom:4px}.progress-panel p{display:none}.progress-panel{padding-bottom:15px}.insight{padding:14px 0;min-height:74px}.field-pair{margin:18px 0}.form-layout h3:not(:first-child){margin-top:19px}.form-layout .panel{padding:22px}.slider .range-labels{min-height:12px}.focus-card{margin-top:20px}.focus-icon{margin-top:20px}.notice{font-size:11px}}
+.chips .fi{width:20px;min-width:20px;height:15px;border-radius:2px}.gallery-intro+.design-gallery img{background:#eef4ff}
+@media(max-width:760px){.university.panel{padding:0}}
+@media(min-width:761px) and (max-width:1050px){.landing{display:block}.hero-copy{max-width:740px;margin:auto}.hero-copy h1{width:auto;max-width:none;font-size:43px}.hero-copy h1+.lead{max-width:none;font-size:18px}.hero-art{width:600px;max-width:100%;margin:45px auto 0;min-height:670px}.photo-wrap{height:630px}.route-0{top:140px;left:0}.route-1{top:305px;left:7%}.route-2{top:470px;left:0}.route-card{width:365px}.route-card b{font-size:16px}.header-links{display:none}}
+.primary.demo-hover{background:#1b50c5}.primary.demo-active,.primary:active:not(:disabled){background:#1745ac}
+.eyebrow,.page-top>span,footer,.micro,.range-labels{color:#607393}nav button{color:#5d7094}.category small{color:#617185}
+@media(min-width:1051px){.route-0{left:12%}.route-1{left:6%}.route-2{left:0}}
