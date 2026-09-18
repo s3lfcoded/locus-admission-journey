@@ -169,15 +169,17 @@ export function App(){
             )}
           </div>
 
-          <button
-            type="button"
-            className={`modern-demo-badge-btn ${showPresets ? 'active' : ''}`}
-            onClick={()=>setShowPresets(!showPresets)}
-            title="Быстрые демо-профили для жюри"
-          >
-            <Lightning size={15} weight="fill" style={{ color: '#1765ed' }} />
-            <span>{t.demoBadge}</span>
-          </button>
+          {step > 0 && (
+            <button
+              type="button"
+              className={`modern-demo-badge-btn ${showPresets ? 'active' : ''}`}
+              onClick={()=>setShowPresets(!showPresets)}
+              title="Быстрые демо-профили для жюри"
+            >
+              <Lightning size={15} weight="fill" style={{ color: '#1765ed' }} />
+              <span>{t.demoBadge}</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -211,7 +213,7 @@ export function App(){
       )}
     </header>
 
-    {(showPresets || activePreset) && (
+    {step > 0 && (showPresets || activePreset) && (
       <PitchPresetsRibbon activePreset={activePreset} onSelect={applyPreset} lang={lang}/>
     )}
 
