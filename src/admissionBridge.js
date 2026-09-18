@@ -53,6 +53,22 @@ const INSTITUTION_DEADLINES = {
   padua: { date: '2 февраля 2027', iso: '2027-02-02' },
   aitu: { date: '15 июля 2027', iso: '2027-07-15' },
   kimep: { date: '20 июля 2027', iso: '2027-07-20' },
+  mit: { date: '1 января 2027', iso: '2027-01-01' },
+  stanford: { date: '5 января 2027', iso: '2027-01-05' },
+  harvard: { date: '1 января 2027', iso: '2027-01-01' },
+  berkeley: { date: '30 ноября 2026', iso: '2026-11-30' },
+  nyu: { date: '5 января 2027', iso: '2027-01-05' },
+  gatech: { date: '4 января 2027', iso: '2027-01-04' },
+  uw: { date: '15 ноября 2026', iso: '2026-11-15' },
+  columbia: { date: '1 января 2027', iso: '2027-01-01' },
+  cmu: { date: '3 января 2027', iso: '2027-01-03' },
+  bocconi: { date: '25 января 2027', iso: '2027-01-25' },
+  heidelberg: { date: '15 июля 2027', iso: '2027-07-15' },
+  snu: { date: '7 марта 2027', iso: '2027-03-07' },
+  bilkent: { date: '10 июля 2027', iso: '2027-07-10' },
+  mnu: { date: '20 июля 2027', iso: '2027-07-20' },
+  kazgasa: { date: '15 июля 2027', iso: '2027-07-15' },
+  amu: { date: '15 июля 2027', iso: '2027-07-15' },
 };
 
 const COUNTRY_LIVING_COSTS = {

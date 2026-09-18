@@ -28,10 +28,12 @@ describe('новые направления в датасете', () => {
   });
 
   it('покрывают медицину с парой биология + химия', () => {
-    const medicine = PROGRAMS.filter((entry) => entry.program.fields.includes('medicine'));
-    expect(medicine.length).toBeGreaterThan(0);
-    for (const entry of medicine) {
-      for (const track of entry.program.tracks) {
+    const medicineEnt = PROGRAMS.filter(
+      (entry) => entry.program.fields.includes('medicine') && entry.program.tracks.some((t) => t.kind === 'ent'),
+    );
+    expect(medicineEnt.length).toBeGreaterThan(0);
+    for (const entry of medicineEnt) {
+      for (const track of entry.program.tracks.filter((t) => t.kind === 'ent')) {
         expect(track.entProfilePair).toEqual(['ent_biology', 'ent_chemistry']);
         // Государственный порог для медицины — 70, а не общие 65.
         expect(track.entMinTotal).toBeGreaterThanOrEqual(70);

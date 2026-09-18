@@ -174,4 +174,37 @@ describe('веса и группировка', () => {
     const institutions = all.map((m) => m.institution.id);
     expect(new Set(institutions).size).toBe(institutions.length);
   });
+
+  it('содержит расширенный каталог с богатым выбором вузов США и разными направлениями', () => {
+    expect(INSTITUTIONS.length).toBeGreaterThanOrEqual(30);
+    const usaUnis = INSTITUTIONS.filter((inst) => inst.country === 'US');
+    expect(usaUnis.length).toBeGreaterThanOrEqual(9);
+    const usaIds = usaUnis.map((u) => u.id);
+    expect(usaIds).toContain('mit');
+    expect(usaIds).toContain('stanford');
+    expect(usaIds).toContain('harvard');
+    expect(usaIds).toContain('berkeley');
+    expect(usaIds).toContain('nyu');
+    expect(usaIds).toContain('gatech');
+    expect(usaIds).toContain('cmu');
+    expect(usaIds).toContain('columbia');
+    expect(usaIds).toContain('uw');
+
+    // Проверяем подбор для сильного абитуриента в США
+    const usaApplicant: ApplicantProfileInput = {
+      examScores: { sat_total: 1560, ielts: 8.0, gpa_4: 3.95 },
+      preferences: { fields: ['it', 'engineering'], countries: ['US'], languages: ['en'] },
+    };
+    const usaMatches = matchInstitutions(usaApplicant);
+    expect(usaMatches.length).toBeGreaterThanOrEqual(5);
+    expect(usaMatches.some((m) => m.institution.id === 'mit')).toBe(true);
+
+    // Проверяем юридическое и дизайнерское направления
+    const lawPrograms = PROGRAMS.filter((p) => p.program.fields.includes('law'));
+    expect(lawPrograms.length).toBeGreaterThanOrEqual(3);
+
+    const designPrograms = PROGRAMS.filter((p) => p.program.fields.includes('design'));
+    expect(designPrograms.length).toBeGreaterThanOrEqual(3);
+  });
 });
+
