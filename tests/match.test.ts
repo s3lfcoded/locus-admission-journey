@@ -206,5 +206,22 @@ describe('веса и группировка', () => {
     const designPrograms = PROGRAMS.filter((p) => p.program.fields.includes('design'));
     expect(designPrograms.length).toBeGreaterThanOrEqual(3);
   });
+
+  it('evaluateAdmissionState подбирает вузы на лету под профиль абитуриента', async () => {
+    const { evaluateAdmissionState } = await import('../src/admissionBridge.js');
+    const resUsa = evaluateAdmissionState({
+      interests: ['IT', 'Инженерия'],
+      gpa: 3.8,
+      ielts: 7.5,
+      ent: '',
+      sat: '',
+      budget: 20000,
+      countries: ['США'],
+      achievements: [],
+    });
+    expect(resUsa?.schools?.length).toBeGreaterThan(5);
+    const usaIds = resUsa?.schools?.map((s) => s.id) || [];
+    expect(usaIds.some((id) => ['asu', 'gatech', 'uw', 'nyu', 'purdue'].includes(id))).toBe(true);
+  });
 });
 

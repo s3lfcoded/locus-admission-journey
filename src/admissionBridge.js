@@ -99,10 +99,6 @@ export function buildEngineProfile({
     gpa_5: Math.min(5.0, Number(((Number(gpa) || 3.6) * 1.25).toFixed(2))),
   };
 
-  if (sat && !isNaN(Number(sat))) {
-    examScores.sat_total = Number(sat);
-  }
-
   let entProfilePair = ['ent_mathematics', 'ent_informatics'];
   if (fields.includes('medicine')) {
     entProfilePair = ['ent_biology', 'ent_chemistry'];
@@ -114,7 +110,10 @@ export function buildEngineProfile({
     entProfilePair = ['ent_world_history', 'ent_human_society_law'];
   }
 
-  const entVal = ent !== '' && !isNaN(Number(ent)) ? Number(ent) : null;
+  const entVal = ent !== '' && !isNaN(Number(ent))
+    ? Number(ent)
+    : (targetCountries.includes('KZ') ? Math.round(((Number(gpa) || 3.6) / 4.0) * 115) : null);
+
   if (entVal !== null) {
     const ratio = Math.max(0, Math.min(1, entVal / 140));
     const h = Math.min(20, Math.round(20 * ratio));
@@ -128,6 +127,15 @@ export function buildEngineProfile({
     examScores.ent_reading_literacy = rl;
     examScores[entProfilePair[0]] = p1;
     examScores[entProfilePair[1]] = p2;
+  }
+
+  if (sat && !isNaN(Number(sat))) {
+    examScores.sat_total = Number(sat);
+  } else if (targetCountries.includes('US') || targetCountries.includes('TR')) {
+    const baseGpa = Number(gpa) || 3.6;
+    const baseIelts = Number(ielts) || 6.5;
+    const projectedSat = Math.min(1600, Math.round(1100 + ((baseGpa - 2.5) / 1.5) * 350 + ((baseIelts - 5.0) / 4.0) * 150));
+    examScores.sat_total = Math.max(900, projectedSat);
   }
 
   return {
@@ -182,7 +190,7 @@ export function evaluateAdmissionState(inputs) {
       }
 
       const risk = bestMatch.closedTracks?.length
-        ? `Закрыты треки: ${bestMatch.closedTracks.map((t) => t.title.ru).join(', ')}`
+        ? `Закрыты треки: ${bestMatch.closedTracks.map((t) => (t.track ? t.track.title.ru : t.title?.ru || 'трек')).join(', ')}`
         : bestMatch.program.provenance.caveat || 'Уточняй финальные условия на официальном сайте.';
 
       const tuition = bestMatch.program.tuitionPerYear;
@@ -208,8 +216,9 @@ export function evaluateAdmissionState(inputs) {
         }
       };
 
-      (primaryTrack?.required || []).forEach(checkRequirement);
-      (primaryTrack?.anyOf || []).forEach((group) => (group || []).forEach(checkRequirement));
+      const primaryTrackObj = primaryTrack?.track || primaryTrack;
+      (primaryTrackObj?.required || []).forEach(checkRequirement);
+      (primaryTrackObj?.anyOf || []).forEach((group) => (group || []).forEach(checkRequirement));
       if (minIelts === null || minSat === null) {
         (bestMatch.program.tracks || []).forEach((track) => {
           (track.required || []).forEach(checkRequirement);
