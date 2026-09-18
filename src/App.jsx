@@ -69,7 +69,6 @@ export function App(){
  const categories=t.categories.map((c,i)=>[c.title,c.desc,catIcons[i]]);
  const [step,setStep]=useState(readStep),[category,setCategory]=useSavedState('category',0),[interests,setInterests]=useSavedState('interests',['IT']),[gpa,setGpa]=useSavedState('gpa',3.6),[ielts,setIelts]=useSavedState('ielts',6.5),[budget,setBudget]=useSavedState('budget',3000),[countries,setCountries]=useSavedState('countries',['Казахстан','Италия']),[achievements,setAchievements]=useSavedState('achievements',[]),[filter,setFilter]=useState('Все'),[compare,setCompare]=useSavedState('compare',['sdu','padua']),[favorite,setFavorite]=useSavedState('favorite','padua'),[tasks,setTasks]=useSavedState('tasks',initialTasks),[toast,setToast]=useState(''),[activePreset,setActivePreset]=useSavedState('activePreset',null);
  const [undoTasks,setUndoTasks]=useState(null);
- const [showHowModal,setShowHowModal]=useState(false);
  const [showLangMenu,setShowLangMenu]=useState(false);
  const [showPresets,setShowPresets]=useState(false);
  const [ent,setEnt]=useSavedState('ent',''),[sat,setSat]=useSavedState('sat','');
@@ -137,14 +136,9 @@ export function App(){
             <UniPathLogo size={30} />
             <span className="modern-brand-title">UniPath <span>AI</span></span>
           </button>
-          <span className="modern-brand-sep" />
-          <button type="button" className="modern-how-btn" onClick={()=>setShowHowModal(true)}>
-            {lang==='KZ'?'Бұл қалай жұмыс істейді':lang==='ENG'?'How it works':'Как это работает'}
-          </button>
         </div>
 
         <div className="modern-topbar-actions">
-          <a href="/presentation" style={{color:'var(--primary)',fontWeight:700,display:'inline-flex',alignItems:'center',gap:'0.3rem',fontSize:'13px',marginRight:'4px'}}><FilePdf size={16}/>{lang==='KZ'?'Презентация':lang==='ENG'?'Pitch Deck':'Презентация'}</a>
           <a href="/designs" style={{color:'#64748b',fontSize:'13px',fontWeight:500,marginRight:'8px'}}>{t.allDesigns}</a>
 
           <div className="modern-lang-dropdown">
@@ -625,54 +619,7 @@ export function App(){
     {step===5&&<><Title label={t.step5.eyebrow} title={t.step5.title} desc={t.step5.desc(school.name)}/><div className="roadmap-layout"><section><div className="progress-panel"><div><b>{t.step5.progressDone(done)}</b><strong>{Math.round(done/6*100)}%</strong></div><div className="progress-track" role="progressbar" aria-label="Прогресс маршрута" aria-valuemin={0} aria-valuemax={6} aria-valuenow={done}><span style={{width:`${done/6*100}%`}}/></div><p className="muted small">{done===6?t.step5.allDone:t.step5.keepGoing}</p></div><div className="timeline">{tasks.map((tItem,i)=><div key={tItem.name} className={'task '+(tItem.done?'done':'')+(i===next?' next':'')}><button className="task-check" aria-label={`${tItem.done?'Снять отметку':'Выполнить'}: ${tItem.name}`} aria-pressed={tItem.done} onClick={()=>setTasks(tasks.map((x,j)=>j===i?{...x,done:!x.done}:x))}>{tItem.done&&<Check weight="bold"/>}</button><div className="task-content"><div className="task-meta"><span>{tItem.date||school.date}</span><span className={'badge '+({Экзамены:'blue',Документы:'slate',Дедлайны:'amber',Активности:'green'}[tItem.tag])}>{tItem.tag}</span></div><h3>{tItem.name}</h3><p>{tItem.done?t.step5.stepDone:i===next?t.step5.stepNext:t.step5.stepPlan}</p><details className="task-details"><summary>{t.step5.detailsPrep}</summary><p>{taskGuides[i][1]}</p><small><Clock size={13}/> {taskGuides[i][0]}</small></details>{i===3&&<div style={{marginTop:'0.85rem'}}><EssayAssistant schoolName={school.name} interests={interests} gpa={gpa} lang={lang} onCopied={msg=>setToast(msg)} defaultOpen={false}/></div>}</div>{i===next&&<button className="icon-button" aria-label="Открыть следующий шаг" onClick={()=>go(6)}><ArrowRight/></button>}</div>)}</div></section><aside className="side-note"><div className="eyebrow">{t.step5.sideGoal}</div><img className="side-campus" src={['sdu','padua','nu'].includes(school.id)?`/assets/campus-${school.id}.png`:'/assets/campus.png'} alt="Иллюстрация кампуса, не официальное фото"/><span className="large-icon"><GraduationCap size={32}/></span><h2>{school.name}</h2><p>{school.place}</p><hr/><p className="small">{t.step5.sideDeadline}</p><h3>{school.date}</h3><button className="primary full" onClick={()=>go(6)}>{t.step5.sideNextBtn} <ArrowRight/></button><button className="secondary full" style={{marginTop:'0.6rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.5rem'}} onClick={()=>{downloadIcsCalendar(tasks,school,taskDates);setToast(t.step5.calendarSaved);}}><CalendarBlank size={18}/>{t.step5.exportCalendar}</button><button className="secondary full" style={{marginTop:'0.45rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.5rem'}} onClick={()=>window.print()}><FilePdf size={18}/>{lang==='KZ'?'Маршрутты PDF жүктеу':lang==='ENG'?'Download Roadmap (PDF)':'Скачать маршрут в PDF'}</button><button className="text-button full" onClick={()=>go(3)}>{t.step5.sideChangeUni}</button></aside></div>{notice}</>}
     {step===6&&<><Title label={t.step6.eyebrow} title={next===-1?t.step6.titleFinished:t.step6.titleFocus} desc={t.step6.desc}/><div className="focus-card"><div className="focus-top"><span className="badge blue"><Sparkle/>{t.step6.topBadge}</span><span className="muted">{t.step6.completedCount(done)}</span></div><div className="focus-icon">{next===-1?<CheckCircle size={48}/>:next===2?<span className="ielts-wordmark" role="img" aria-label="IELTS">IELTS<sup>®</sup></span>:<CalendarBlank size={48}/>}</div><h2>{next===-1?'Маршрут завершён':tasks[next].name}</h2><p>{next===2?'Выбери удобный экзаменационный центр и дату. Оставь время на подготовку, получение результатов и возможную пересдачу.':next===3?'Собери факты о своих проектах и интересах. Объясни, почему именно эта программа поможет тебе достичь цели.':next===4?'Проверь дату экзамена, документы и формат. После экзамена добавь результат в свой профиль.':next===5?'Проверь комплект документов на официальном сайте. Отправь заявку и сохрани подтверждение.':next===-1?'Все шесть шагов отмечены. Проверь подтверждение подачи и следи за ответом университета.':'Подготовь данные и сохрани необходимые материалы.'}</p>{engineResult?.roadmap?.nextAction?.why&&<div style={{display:'flex',alignItems:'center',gap:'0.5rem',background:'rgba(23,101,237,0.06)',padding:'0.6rem 0.85rem',borderRadius:'8px',marginBottom:'1rem',fontSize:'0.88rem',color:'var(--primary)'}}><Sparkle size={18} weight="bold"/><span><b>Фокус движка:</b> {engineResult.roadmap.nextAction.why}</span></div>}{next>=0&&<div className="definition-done"><div><Clock size={16}/><b>{taskGuides[next][0]}</b><span>на этот этап</span></div><h3>{t.step6.howToKnow}</h3><p>{taskGuides[next][2]}</p></div>}<div className="resource"><div><b>{next===2||next===4?'Официальная запись на IELTS':'Приёмная комиссия университета'}</b><small>Проверь актуальные условия перед следующим шагом</small></div><a aria-label="Открыть официальный ресурс" href={next===2||next===4?'https://ielts.org/take-a-test/book-a-test':school.url} target="_blank" rel="noreferrer"><ArrowUpRight size={25}/></a></div>{next!==-1&&<button className="primary full" onClick={complete}>{t.step6.markDone} <Check size={22}/></button>}<div className="focus-bottom"><Clock size={18}/><span>{next===-1?'Все шаги завершены':t.step6.daysLeft(taskDays, tasks[next].date||school.date)}</span></div></div>{next===3&&<div style={{marginTop:'1.5rem',maxWidth:'680px',width:'100%',marginInline:'auto'}}><EssayAssistant schoolName={school.name} interests={interests} gpa={gpa} lang={lang} onCopied={msg=>setToast(msg)} defaultOpen={true}/></div>}<div style={{display:'flex',justifyContent:'center',gap:'1rem',marginTop:'1rem'}}><button className="text-button center" onClick={()=>go(5)}><ArrowLeft/>{t.step6.backRoadmap}</button><button className="text-button center" style={{display:'inline-flex',alignItems:'center',gap:'0.4rem'}} onClick={()=>window.print()}><FilePdf size={16}/>{lang==='KZ'?'Маршрутты PDF сақтау':lang==='ENG'?'Save PDF':'Сохранить в PDF'}</button></div></>}
    </>}</main><footer><span>{t.footer}</span><span>LOCUS Hackathon 2026 / <a href="/designs">{t.allDesigns}</a></span></footer>{toast&&<div className="toast" role="status"><CheckCircle/><span>{toast}</span><button onClick={undo}>Отменить</button><button aria-label="Закрыть уведомление" onClick={()=>setToast('')}>×</button></div>}
-    {showHowModal && (
-      <div className="how-it-works-overlay" onClick={()=>setShowHowModal(false)}>
-        <div className="how-it-works-modal" onClick={e=>e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Как это работает">
-          <div className="how-modal-header">
-            <h2>{lang==='KZ'?'Бұл қалай жұмыс істейді?':lang==='ENG'?'How it works?':'Как это работает?'}</h2>
-            <button type="button" className="how-modal-close" onClick={()=>setShowHowModal(false)} aria-label="Закрыть">×</button>
-          </div>
-          <div className="how-modal-body">
-            <div className="how-step-card">
-              <div className="how-step-badge">1</div>
-              <div className="how-step-content">
-                <b>{lang==='KZ'?'Профильді толтыру':lang==='ENG'?'Fill Profile':'Заполни профиль'}</b>
-                <p>{lang==='KZ'?'Бағыт, GPA, IELTS, ҰБТ/SAT және бюджетті көрсетіңіз.':lang==='ENG'?'Specify interests, GPA, IELTS, ENT/SAT and tuition budget.':'Укажи интересы, GPA, IELTS, ЕНТ/SAT и бюджет на обучение.'}</p>
-              </div>
-            </div>
-            <div className="how-step-card">
-              <div className="how-step-badge">2</div>
-              <div className="how-step-content">
-                <b>{lang==='KZ'?'Диагностика алу':lang==='ENG'?'Get Diagnostics':'Получи диагностику'}</b>
-                <p>{lang==='KZ'?'Алгоритм сіздің күшті жақтарыңыз бен назар аударатын тұстарды талдайды.':lang==='ENG'?'The AI engine evaluates your strengths and areas needing attention.':'Алгоритм рассчитает твои сильные стороны и зоны риска.'}</p>
-              </div>
-            </div>
-            <div className="how-step-card">
-              <div className="how-step-badge">3</div>
-              <div className="how-step-content">
-                <b>{lang==='KZ'?'Университеттерді таңдау':lang==='ENG'?'Explore Universities':'Выбери университеты'}</b>
-                <p>{lang==='KZ'?'Safety, Target және Reach санаттарындағы сәйкес вуздарды қараңыз.':lang==='ENG'?'Explore matching universities split across Safety, Target and Reach categories.':'Ознакомься со списком подходящих вузов в категориях Safety, Target и Reach.'}</p>
-              </div>
-            </div>
-            <div className="how-step-card">
-              <div className="how-step-badge">4</div>
-              <div className="how-step-content">
-                <b>{lang==='KZ'?'Вуздарды салыстыру':lang==='ENG'?'Compare Options':'Сравни варианты'}</b>
-                <p>{lang==='KZ'?'Бағасы, дедлайн, талаптары бойынша ең тиімді нұсқаны таңдаңыз.':lang==='ENG'?'Compare tuition, living costs, requirements and deadlines head-to-head.':'Сопоставь дедлайны, стоимость и проходные баллы лицом к лицу.'}</p>
-              </div>
-            </div>
-            <div className="how-step-card">
-              <div className="how-step-badge">5</div>
-              <div className="how-step-content">
-                <b>{lang==='KZ'?'Дайын маршрут алу':lang==='ENG'?'Get Roadmap':'Получи готовый маршрут'}</b>
-                <p>{lang==='KZ'?'Дедлайнға дейінгі нақты қадамдар мен эссе құрастырушы көмекшісі.':lang==='ENG'?'Actionable milestone checklist, essay helper and calendar export.':'Чек-лист задач до дедлайна, эссе-ассистент и экспорт в календарь.'}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )}
-   <RoadmapPdfDocument school={school} tasks={tasks} taskDates={taskDates} taskGuides={taskGuides} gpa={gpa} ielts={ielts} ent={ent} sat={sat} budget={budget} interests={interests} countries={countries} achievements={achievements} lang={lang}/>
+    <RoadmapPdfDocument school={school} tasks={tasks} taskDates={taskDates} taskGuides={taskGuides} gpa={gpa} ielts={ielts} ent={ent} sat={sat} budget={budget} interests={interests} countries={countries} achievements={achievements} lang={lang}/>
    </>;
 }
 function Title({label,title,desc}){return <div className="page-title"><div className="eyebrow">{label}</div><h1>{title}</h1><p>{desc}</p></div>}
