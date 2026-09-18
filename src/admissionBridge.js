@@ -30,6 +30,40 @@ const COUNTRY_MAP = {
   США: 'US',
 };
 
+const COUNTRY_DEADLINES = {
+  KZ: { date: '15 июля 2027', iso: '2027-07-15' },
+  DE: { date: '15 июля 2027', iso: '2027-07-15' },
+  TR: { date: '30 июня 2027', iso: '2027-06-30' },
+  US: { date: '1 февраля 2027', iso: '2027-02-01' },
+  IT: { date: '2 февраля 2027', iso: '2027-02-02' },
+  KR: { date: '15 января 2027', iso: '2027-01-15' },
+};
+
+const INSTITUTION_DEADLINES = {
+  nu: { date: '30 марта 2027', iso: '2027-03-30' },
+  purdue: { date: '1 ноября 2026', iso: '2026-11-01' },
+  yonsei: { date: '20 декабря 2026', iso: '2026-12-20' },
+  kaist: { date: '15 января 2027', iso: '2027-01-15' },
+  asu: { date: '1 февраля 2027', iso: '2027-02-01' },
+  tum: { date: '15 июля 2027', iso: '2027-07-15' },
+  rwth: { date: '15 июля 2027', iso: '2027-07-15' },
+  metu: { date: '30 июня 2027', iso: '2027-06-30' },
+  koc: { date: '15 июля 2027', iso: '2027-07-15' },
+  polimi: { date: '2 февраля 2027', iso: '2027-02-02' },
+  padua: { date: '2 февраля 2027', iso: '2027-02-02' },
+  aitu: { date: '15 июля 2027', iso: '2027-07-15' },
+  kimep: { date: '20 июля 2027', iso: '2027-07-20' },
+};
+
+const COUNTRY_LIVING_COSTS = {
+  KZ: '$300–450/мес',
+  DE: '$850–1 100/мес',
+  TR: '$350–550/мес',
+  US: '$1 000–1 400/мес',
+  IT: '$700–950/мес',
+  KR: '$700–1 000/мес',
+};
+
 export function buildEngineProfile({
   interests = ['IT'],
   gpa = 3.6,
@@ -142,8 +176,50 @@ export function evaluateAdmissionState(inputs) {
           : `${tuition.amount.toLocaleString('ru-RU')} ₸`
         : 'Грант по конкурсу';
 
-      const deadline = bestMatch.institution.country === 'KZ' ? '15 июля 2027' : '2 февраля 2027';
-      const iso = bestMatch.institution.country === 'KZ' ? '2027-07-15' : '2027-02-02';
+      const countryCode = bestMatch.institution.country || 'KZ';
+      const deadlineInfo = INSTITUTION_DEADLINES[institution.id] || COUNTRY_DEADLINES[countryCode] || { date: '15 июля 2027', iso: '2027-07-15' };
+      const livingCost = COUNTRY_LIVING_COSTS[countryCode] || '$500–800/мес';
+
+      let minIelts = null;
+      let minSat = null;
+      const checkRequirement = (item) => {
+        if (!item) return;
+        if (item.exam === 'ielts') {
+          if (minIelts === null || item.min > minIelts) minIelts = item.min;
+        }
+        if (item.exam === 'sat_total') {
+          if (minSat === null || item.min > minSat) minSat = item.min;
+        }
+      };
+
+      (primaryTrack?.required || []).forEach(checkRequirement);
+      (primaryTrack?.anyOf || []).forEach((group) => (group || []).forEach(checkRequirement));
+      if (minIelts === null || minSat === null) {
+        (bestMatch.program.tracks || []).forEach((track) => {
+          (track.required || []).forEach(checkRequirement);
+          (track.anyOf || []).forEach((group) => (group || []).forEach(checkRequirement));
+        });
+      }
+
+      const formattedIelts =
+        minIelts !== null
+          ? minIelts.toFixed(1)
+          : countryCode === 'KZ'
+          ? 'Не требуется (ЕНТ)'
+          : countryCode === 'DE'
+          ? '6.5'
+          : '6.0';
+
+      const formattedSat =
+        minSat !== null
+          ? minSat.toLocaleString('ru-RU')
+          : countryCode === 'KZ'
+          ? 'Не требуется'
+          : countryCode === 'US'
+          ? '1 250 (рекомендуется)'
+          : countryCode === 'TR'
+          ? '1 200 (или YÖS)'
+          : 'Не требуется';
 
       return {
         id: institution.id,
@@ -156,11 +232,11 @@ export function evaluateAdmissionState(inputs) {
         mark: institution.shortName || institution.id.toUpperCase(),
         color,
         cost: formattedCost,
-        living: institution.country === 'KZ' ? '$300–500' : '$700–950',
-        ielts: institution.id === 'nu' ? '7.0' : institution.id === 'padua' ? '6.5' : '6.0',
-        sat: institution.id === 'nu' ? '1 400' : 'Не требуется',
-        date: deadline,
-        iso,
+        living: livingCost,
+        ielts: formattedIelts,
+        sat: formattedSat,
+        date: deadlineInfo.date,
+        iso: deadlineInfo.iso,
         url: institution.website,
         why: reasons.slice(0, 2),
         risk,
