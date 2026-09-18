@@ -4,9 +4,11 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --host 0.0.0.0 --port 5173",
+        "start": "vite --host 0.0.0.0 --port 5173",
         "build": "vite build",
-        "preview": "vite preview",
+        "preview": "vite preview --host 0.0.0.0 --port 5173",
+        "test": "npx vitest run",
         "test:sites": "node --test tests/sites-worker.test.mjs"
     },
     "dependencies": {
