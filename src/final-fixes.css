@@ -43,3 +43,448 @@
   .copy-draft-btn{width:100%}
 }
 
+/* ══════════════════════════════════════════════════════
+   Step 3: University Card Design aligned with screen-4.png
+   ══════════════════════════════════════════════════════ */
+.university-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 22px;
+}
+
+.university.panel {
+  padding: 0 !important;
+  background: #ffffff;
+  border: 1px solid #dfe8f5;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.university.panel:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+}
+
+.school-art {
+  height: 180px !important;
+  width: 100%;
+  background-color: #e2e8f0;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px 16px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.school-body {
+  padding: 20px 22px 22px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  background: #ffffff;
+  flex: 1;
+}
+
+.school-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+}
+
+.school-emblem-wrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+}
+
+.school-info-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.school-name {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin: 0 !important;
+  line-height: 1.25 !important;
+  min-height: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.school-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.school-location svg {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.school-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.school-badge.safety {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.school-badge.target {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.school-badge.reach {
+  background: #faf5ff;
+  color: #9333ea;
+  border: 1px solid #e9d5ff;
+}
+
+.school-match-section {
+  margin-top: 2px;
+}
+
+.school-match-label-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  color: #475569;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.match-info-icon {
+  color: #94a3b8;
+  cursor: help;
+}
+
+.school-match-score-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.school-match-percent {
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.school-match-percent.tone-green {
+  color: #059669;
+}
+
+.school-match-percent.tone-blue {
+  color: #1260f5;
+}
+
+.school-match-percent.tone-amber {
+  color: #7c3aed;
+}
+
+.school-match-track {
+  flex: 1;
+  height: 7px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.school-match-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+  display: block;
+}
+
+.school-match-fill.tone-green {
+  background: #10b981;
+}
+
+.school-match-fill.tone-blue {
+  background: #1260f5;
+}
+
+.school-match-fill.tone-amber {
+  background: #8b5cf6;
+}
+
+.school-program-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.school-program-row .program-icon {
+  color: #1e293b;
+  flex-shrink: 0;
+}
+
+.school-program-row .program-text small {
+  display: block;
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.school-program-row .program-text b {
+  display: block;
+  font-size: 0.95rem;
+  color: #0f172a;
+  font-weight: 700;
+  margin-top: 2px;
+  line-height: 1.25;
+}
+
+.school-why-section {
+  margin-top: 2px;
+}
+
+.school-why-section h4 {
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin: 0 0 8px !important;
+}
+
+.school-why-section .reason-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: #334155;
+  margin: 0 0 6px;
+  line-height: 1.45;
+  min-height: 0;
+}
+
+.why-check-icon {
+  color: #10b981;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.school-caution-box {
+  background: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: 9px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 0.78rem;
+  color: #92400e;
+  line-height: 1.45;
+  margin-top: 2px;
+  min-height: 52px;
+}
+
+.caution-icon {
+  color: #d97706;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.school-facts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.school-facts-grid .fact-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.school-facts-grid .fact-icon {
+  color: #475569;
+  flex-shrink: 0;
+}
+
+.school-facts-grid .fact-text small {
+  display: block;
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.school-facts-grid .fact-text b {
+  display: block;
+  font-size: 0.92rem;
+  color: #0f172a;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.school-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+  font-size: 0.82rem;
+}
+
+.compare-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #334155;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.compare-checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1260f5;
+  cursor: pointer;
+}
+
+.official-link {
+  color: #1260f5;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  font-size: 0.82rem;
+}
+
+.official-link:hover {
+  text-decoration: underline;
+}
+
+.select-target-cta {
+  background: #1260f5 !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  padding: 12px 16px !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  width: 100% !important;
+  transition: background 0.15s ease, box-shadow 0.15s ease !important;
+  box-shadow: 0 4px 12px rgba(18, 96, 245, 0.2) !important;
+  margin-top: 4px !important;
+}
+
+.select-target-cta:hover {
+  background: #0d4cd3 !important;
+  box-shadow: 0 6px 16px rgba(18, 96, 245, 0.3) !important;
+}
+
+.compare-btn-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 9px 18px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #1e293b;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.compare-btn-nav:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.filter-row .tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #dfe8f5;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.filter-row .tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 9px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 0;
+  color: #475569;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filter-row .tabs button.active {
+  background: #1260f5;
+  color: #ffffff;
+}
+
+@media (max-width: 1050px) and (min-width: 761px) {
+  .university-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 760px) {
+  .university-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .filter-row .tabs {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .filter-row .tabs button {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+
