@@ -966,7 +966,7 @@ export const INSTITUTIONS_RAW = [
             title: { ru: 'Региональная стипендия (Veneto DSU)', kk: 'Өңірлік грант', en: 'Regional Scholarship (DSU)' },
             fundingType: 'scholarship',
             required: [{ exam: 'gpa_4', min: 3.5 }],
-            anyOf: [[{ exam: 'ielts', min: 6.5 }]],
+            anyOf: [[{ exam: 'ielts', min: 6.5 }, { exam: 'toefl_ibt', min: 85 }]],
             scoreExam: 'ielts',
             lastPassingScore: 6.5,
             places: null,

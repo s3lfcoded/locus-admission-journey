@@ -1,0 +1,566 @@
+/* Presentation Deck Styling */
+
+.deck-wrapper {
+  min-height: 100vh;
+  background: #090d16;
+  color: #f8fafc;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.deck-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.deck-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.deck-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  transition: all 0.15s ease;
+}
+
+.deck-back-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.deck-title-nav {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.deck-nav-center {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.deck-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.deck-btn:hover:not(:disabled) {
+  background: #1260f5;
+  border-color: #1260f5;
+}
+
+.deck-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.deck-page-indicator {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  min-width: 60px;
+  text-align: center;
+}
+
+.deck-print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #1260f5;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.deck-print-btn:hover {
+  background: #0d4ed8;
+  box-shadow: 0 0 15px rgba(18, 96, 245, 0.5);
+}
+
+.deck-screen-viewport {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Slide Card Frame */
+.slide {
+  width: 100%;
+  max-width: 1120px;
+  aspect-ratio: 16 / 9;
+  background: radial-gradient(120% 120% at 50% 0%, #151d30 0%, #0c1220 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 3rem 3.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.slide::before {
+  content: '';
+  position: absolute;
+  top: -150px;
+  right: -150px;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(18, 96, 245, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Slide Headers */
+.slide-header {
+  margin-bottom: 1.5rem;
+}
+
+.slide-num {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #60a5fa;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.slide-header h2 {
+  margin: 0 0 0.4rem 0;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.slide-subtitle {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #94a3b8;
+}
+
+/* Slide 1 Hero */
+.slide-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(18, 96, 245, 0.15);
+  border: 1px solid rgba(18, 96, 245, 0.4);
+  color: #60a5fa;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 1rem;
+  border-radius: 30px;
+  align-self: flex-start;
+}
+
+.title-hero {
+  margin-top: 1rem;
+}
+
+.brand-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.brand-pill b {
+  color: #3b82f6;
+}
+
+.title-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem 0;
+}
+
+.title-hero h1 span {
+  background: linear-gradient(90deg, #60a5fa 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.lead-text {
+  font-size: 1.2rem;
+  color: #94a3b8;
+  max-width: 850px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.slide-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+}
+
+.footer-item small {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.footer-item b {
+  font-size: 1rem;
+  color: #f1f5f9;
+}
+
+/* Grids and Cards */
+.cards-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.cards-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  flex: 1;
+}
+
+.two-col-deck {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.deck-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.deck-card h3 {
+  margin: 0.5rem 0 0.5rem 0;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.deck-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  flex: 1;
+}
+
+.deck-card.danger {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.03);
+}
+
+.card-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.danger-icon {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.primary-icon {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.success-icon {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.accent-icon {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+.card-stat {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.75rem;
+}
+
+.card-stat b {
+  display: block;
+  font-size: 1.4rem;
+  color: #f87171;
+  font-weight: 800;
+}
+
+.card-stat span {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* Workflow steps */
+.workflow-steps-deck {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.75rem;
+  flex: 1;
+  align-items: center;
+}
+
+.wf-step-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem 0.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.wf-step-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1260f5;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.wf-step-card h4 {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.wf-step-card p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.35;
+}
+
+/* Deck lists */
+.deck-list {
+  margin: 0.75rem 0 0 0;
+  padding-left: 1.25rem;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.deck-list li {
+  margin-bottom: 0.5rem;
+}
+
+.deck-list code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  color: #60a5fa;
+  font-size: 0.88rem;
+}
+
+/* Code card */
+.code-card {
+  background: #070a12;
+  border-color: rgba(59, 130, 246, 0.3);
+  padding: 0;
+  overflow: hidden;
+}
+
+.code-header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-card pre {
+  margin: 0;
+  padding: 1.25rem;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.82rem;
+  color: #93c5fd;
+  line-height: 1.5;
+}
+
+/* Highlights */
+.highlight-card {
+  border-color: rgba(59, 130, 246, 0.3);
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+.highlight-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #60a5fa;
+}
+
+/* Team */
+.team-grid .team-card {
+  text-align: center;
+  align-items: center;
+}
+
+.team-avatar {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.team-card small {
+  display: block;
+  color: #38bdf8;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.team-card p {
+  font-size: 0.85rem;
+}
+
+/* Roadmap timeline */
+.roadmap-timeline-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.rm-item {
+  border-left: 3px solid #1260f5;
+  padding-left: 0.75rem;
+}
+
+.rm-item b {
+  color: #60a5fa;
+  font-size: 0.95rem;
+  display: block;
+}
+
+.rm-item p {
+  margin: 0.15rem 0 0 0;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* Screen vs Print Viewports */
+.print-only {
+  display: none;
+}
+
+/* ==================================================== */
+/* MULTI-PAGE PRINT-TO-PDF RULES                        */
+/* ==================================================== */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  html, body {
+    background: #0c1220 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-slide-page {
+    width: 297mm;
+    height: 210mm;
+    page-break-after: always;
+    page-break-inside: avoid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12mm 16mm;
+    box-sizing: border-box;
+    background: #090d16 !important;
+  }
+
+  .print-slide-page .slide {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    padding: 10mm 14mm !important;
+    background: #0f172a !important;
+  }
+}

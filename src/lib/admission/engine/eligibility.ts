@@ -164,9 +164,12 @@ export function checkPreferences(
 ): Blocker[] {
   const blockers: Blocker[] = [];
   const prefs = profile.preferences;
+  const countries = prefs.countries ?? [];
+  const cities = prefs.cities ?? [];
+  const languages = prefs.languages ?? [];
 
-  const countryAllowed = prefs.countries.length === 0 || prefs.countries.includes(institution.country);
-  const cityAllowed = prefs.cities.length === 0 || prefs.cities.includes(institution.city);
+  const countryAllowed = countries.length === 0 || countries.includes(institution.country);
+  const cityAllowed = cities.length === 0 || cities.includes(institution.city);
 
   if (!countryAllowed && !prefs.willingToRelocate) {
     blockers.push({
@@ -178,7 +181,7 @@ export function checkPreferences(
     blockers.push({ code: 'city_not_allowed', message: `${institution.city} — не тот город, и переезд не рассматривается` });
   }
 
-  if (prefs.languages.length > 0 && !program.languages.some((lang) => prefs.languages.includes(lang))) {
+  if (languages.length > 0 && !program.languages.some((lang) => languages.includes(lang))) {
     blockers.push({
       code: 'language_not_allowed',
       message: `Обучение на языке: ${program.languages.map((l) => LANGUAGE_TITLES[l]).join(', ')}`,

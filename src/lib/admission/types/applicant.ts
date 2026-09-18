@@ -32,11 +32,11 @@ export type ApplicantPreferences = z.infer<typeof applicantPreferencesSchema>;
 export const applicantProfileSchema = z
   .object({
     /** Результаты по каждому экзамену в его собственной шкале. */
-    examScores: z.record(examCodeSchema, z.number()).default({}),
+    examScores: z.record(examCodeSchema, z.number().optional()).default({}),
     /** Пара профильных предметов ЕНТ, которую абитуриент сдаёт или сдал. */
     entProfilePair: z.tuple([examCodeSchema, examCodeSchema]).optional(),
     achievements: z.array(achievementKindSchema).default([]),
-    preferences: applicantPreferencesSchema.default({}),
+    preferences: applicantPreferencesSchema.default(() => applicantPreferencesSchema.parse({})),
     /** Планируемая дата подачи — от неё строится roadmap. ГГГГ-ММ-ДД. */
     plannedIntake: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   })

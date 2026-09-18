@@ -34,13 +34,21 @@ export function inferTrackKinds(profile: ApplicantProfile): AdmissionTrack['kind
   const kinds = new Set<AdmissionTrack['kind']>();
   const scores = profile.examScores;
 
-  if (profile.entProfilePair !== undefined || Object.keys(scores).some((code) => code.startsWith('ent_'))) {
+  if (
+    profile.entProfilePair !== undefined ||
+    Object.entries(scores).some(([code, score]) => code.startsWith('ent_') && score !== undefined)
+  ) {
     kinds.add('ent');
   }
-  if (scores.ielts !== undefined || scores.toefl_ibt !== undefined || scores.sat_total !== undefined || scores.act_composite !== undefined) {
+  if (
+    scores.ielts !== undefined ||
+    scores.toefl_ibt !== undefined ||
+    scores.sat_total !== undefined ||
+    scores.act_composite !== undefined
+  ) {
     kinds.add('international');
   }
-  if (Object.keys(scores).some((code) => code.startsWith('ege_'))) {
+  if (Object.entries(scores).some(([code, score]) => code.startsWith('ege_') && score !== undefined)) {
     kinds.add('ege');
   }
   // Ничего не сдано — показываем казахстанский путь как основной.
