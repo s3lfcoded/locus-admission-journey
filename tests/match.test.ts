@@ -223,5 +223,56 @@ describe('веса и группировка', () => {
     const usaIds = resUsa?.schools?.map((s) => s.id) || [];
     expect(usaIds.some((id) => ['asu', 'gatech', 'uw', 'nyu', 'purdue'].includes(id))).toBe(true);
   });
+
+  it('evaluateAdmissionState распределяет вузы по реалистичным категориям риска и баллам соответствия', async () => {
+    const { evaluateAdmissionState } = await import('../src/admissionBridge.js');
+    const res = evaluateAdmissionState({
+      interests: ['IT'],
+      gpa: 3.6,
+      ielts: 6.5,
+      ent: '',
+      sat: '',
+      budget: 3000,
+      countries: ['Казахстан', 'Италия', 'США'],
+      category: 0,
+      achievements: [],
+    });
+
+    const schools = res.schools;
+    expect(schools.length).toBeGreaterThan(5);
+
+    // Убеждаемся, что не все вузы 99%
+    const matches = schools.map((s) => s.match);
+    const uniqueMatches = new Set(matches);
+    expect(uniqueMatches.size).toBeGreaterThan(3);
+    expect(matches.some((m) => m < 90)).toBe(true);
+
+    // Убеждаемся, что присутствуют все три категории риска: Safety, Target, Reach
+    const types = new Set(schools.map((s) => s.type));
+    expect(types.has('Safety')).toBe(true);
+    expect(types.has('Target')).toBe(true);
+    expect(types.has('Reach')).toBe(true);
+
+    // MIT / Stanford / Harvard должны быть Reach
+    const mit = schools.find((s) => s.id === 'mit');
+    if (mit) {
+      expect(mit.type).toBe('Reach');
+      expect(mit.risk).toMatch(/конкурс|SAT|олимпиад/i);
+    }
+
+    // NU должен быть Reach для среднего абитуриента
+    const nu = schools.find((s) => s.id === 'nu');
+    if (nu) {
+      expect(nu.type).toBe('Reach');
+      expect(nu.risk).toMatch(/IELTS|грант|конкурс/i);
+    }
+
+    // SDU должен быть Safety
+    const sdu = schools.find((s) => s.id === 'sdu');
+    if (sdu) {
+      expect(sdu.type).toBe('Safety');
+      expect(sdu.risk).toMatch(/Конкуренция|ЕНТ|олимпиад/i);
+    }
+  });
 });
 
