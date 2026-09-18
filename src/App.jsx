@@ -10,7 +10,7 @@ import {DEMO_PRESETS, PitchPresetsRibbon} from './PitchPresets.jsx';
 import {getPersonalizedDiagnostics} from './diagnosticEngine.js';
 import {RoadmapPdfDocument} from './RoadmapPdf.jsx';
 import './roadmap-pdf.css';
-import {ArrowRight,ArrowLeft,Check,GraduationCap,GlobeHemisphereWest,Student,Sparkle,Target,MapTrifold,CheckCircle,WarningCircle,ArrowUpRight,Plus,Clock,ListChecks,Path,CalendarBlank,Lightning,FilePdf,ShieldCheck,TrendUp,Info,Coins,MapPin,Scales,Desktop,Gear,ChartBar,Stethoscope,Palette,Users,CaretDown,X,HouseLine,FileText,CheckSquare,Warning} from '@phosphor-icons/react';
+import {ArrowRight,ArrowLeft,Check,GraduationCap,GlobeHemisphereWest,Student,Sparkle,Target,MapTrifold,CheckCircle,WarningCircle,ArrowUpRight,Plus,Clock,ListChecks,Path,CalendarBlank,Lightning,FilePdf,ShieldCheck,TrendUp,Info,Coins,MapPin,Scales,Desktop,Gear,ChartBar,Stethoscope,Palette,Users,CaretDown,X,HouseLine,FileText,CheckSquare,Warning,Plant} from '@phosphor-icons/react';
 import {UniversityLogo} from './components/UniversityLogo.jsx';
 import {UniPathLogo} from './components/UniPathLogo.jsx';
 import '@fontsource/inter/400.css';
@@ -350,12 +350,12 @@ export function App(){
                 </div>
                 <div className="step1-input-wrap">
                   <input
-                    type="number"
-                    min="0"
-                    max="140"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     placeholder={lang==='KZ'?'Мысалы, 110':lang==='ENG'?'e.g. 110':'Например, 110'}
                     value={ent}
-                    onChange={(e) => setEnt(e.target.value)}
+                    onChange={(e) => setEnt(e.target.value.replace(/\D/g, ''))}
                     className="step1-num-input"
                     aria-invalid={entError}
                   />
@@ -372,12 +372,12 @@ export function App(){
                 </div>
                 <div className="step1-input-wrap">
                   <input
-                    type="number"
-                    min="400"
-                    max="1600"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     placeholder={lang==='KZ'?'Мысалы, 1200':lang==='ENG'?'e.g. 1200':'Например, 1200'}
                     value={sat}
-                    onChange={(e) => setSat(e.target.value)}
+                    onChange={(e) => setSat(e.target.value.replace(/\D/g, ''))}
                     className="step1-num-input"
                     aria-invalid={satError}
                   />
@@ -761,7 +761,263 @@ export function App(){
         </div>
       </div>
     )}
-    {step===5&&<><Title label={t.step5.eyebrow} title={t.step5.title} desc={t.step5.desc(school.name)}/><div className="roadmap-layout"><section><div className="progress-panel"><div><b>{t.step5.progressDone(done)}</b><strong>{Math.round(done/6*100)}%</strong></div><div className="progress-track" role="progressbar" aria-label="Прогресс маршрута" aria-valuemin={0} aria-valuemax={6} aria-valuenow={done}><span style={{width:`${done/6*100}%`}}/></div><p className="muted small">{done===6?t.step5.allDone:t.step5.keepGoing}</p></div><div className="timeline">{tasks.map((tItem,i)=><div key={tItem.name} className={'task '+(tItem.done?'done':'')+(i===next?' next':'')}><button className="task-check" aria-label={`${tItem.done?'Снять отметку':'Выполнить'}: ${tItem.name}`} aria-pressed={tItem.done} onClick={()=>setTasks(tasks.map((x,j)=>j===i?{...x,done:!x.done}:x))}>{tItem.done&&<Check weight="bold"/>}</button><div className="task-content"><div className="task-meta"><span>{tItem.date||school.date}</span><span className={'badge '+({Экзамены:'blue',Документы:'slate',Дедлайны:'amber',Активности:'green'}[tItem.tag])}>{tItem.tag}</span></div><h3>{tItem.name}</h3><p>{tItem.done?t.step5.stepDone:i===next?t.step5.stepNext:t.step5.stepPlan}</p><details className="task-details"><summary>{t.step5.detailsPrep}</summary><p>{taskGuides[i][1]}</p><small><Clock size={13}/> {taskGuides[i][0]}</small></details>{i===3&&<div style={{marginTop:'0.85rem'}}><EssayAssistant schoolName={school.name} interests={interests} gpa={gpa} lang={lang} onCopied={msg=>setToast(msg)} defaultOpen={false}/></div>}</div>{i===next&&<button className="icon-button" aria-label="Открыть следующий шаг" onClick={()=>go(6)}><ArrowRight/></button>}</div>)}</div></section><aside className="side-note"><div className="eyebrow">{t.step5.sideGoal}</div><img className="side-campus" src={['sdu','padua','nu'].includes(school.id)?`/assets/campus-${school.id}.png`:'/assets/campus.png'} alt="Иллюстрация кампуса, не официальное фото"/><span className="large-icon"><GraduationCap size={32}/></span><h2>{school.name}</h2><p>{school.place}</p><hr/><p className="small">{t.step5.sideDeadline}</p><h3>{school.date}</h3><button className="primary full" onClick={()=>go(6)}>{t.step5.sideNextBtn} <ArrowRight/></button><button className="secondary full" style={{marginTop:'0.6rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.5rem'}} onClick={()=>{downloadIcsCalendar(tasks,school,taskDates);setToast(t.step5.calendarSaved);}}><CalendarBlank size={18}/>{t.step5.exportCalendar}</button><button className="secondary full" style={{marginTop:'0.45rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.5rem'}} onClick={()=>window.print()}><FilePdf size={18}/>{lang==='KZ'?'Маршрутты PDF жүктеу':lang==='ENG'?'Download Roadmap (PDF)':'Скачать маршрут в PDF'}</button><button className="text-button full" onClick={()=>go(3)}>{t.step5.sideChangeUni}</button></aside></div>{notice}</>}
+    {step===5&&(
+      <div className="roadmap-screen-wrap">
+        <div className="roadmap-hero-section">
+          <div className="roadmap-eyebrow">
+            {lang==='KZ'?'СЕНІҢ ЖЕКЕ МАРШРУТЫҢ':lang==='ENG'?'YOUR PERSONAL ROADMAP':'ТВОЙ ПЕРСОНАЛЬНЫЙ МАРШРУТ'}
+          </div>
+          <div className="roadmap-title-row">
+            <div>
+              <h1 className="roadmap-hero-title">
+                {lang==='KZ'?'Сенің маршрутың алдыңда тұр.':lang==='ENG'?'Your roadmap is right in front of you.':'Твой маршрут уже перед тобой.'}
+              </h1>
+              <p className="roadmap-hero-sub">
+                {school.name} · {school.bestProgramTitle || 'Computer Science'} · {lang==='KZ'?'қабылдау 2027':lang==='ENG'?'intake 2027':'набор 2027'}
+              </p>
+            </div>
+            <div className="roadmap-handwriting-note">
+              <span className="roadmap-handwriting-text">
+                {lang==='KZ'?'Үлкен мақсаттар қадамдардан құралады':lang==='ENG'?'Big goals are built from small steps':'Большие цели складываются из шагов'}
+              </span>
+              <svg width="48" height="34" viewBox="0 0 48 34" fill="none" xmlns="http://www.w3.org/2000/svg" className="roadmap-handwriting-arrow">
+                <path d="M4 4 C 18 2, 36 8, 40 28 M 40 28 L 33 22 M 40 28 L 44 20" stroke="#475569" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div className="roadmap-layout-grid">
+          {/* Main Left Card */}
+          <div className="roadmap-main-card">
+            <div className="roadmap-progress-header">
+              {lang==='KZ'
+                ? `${tasks.length} қадамның ${done}-і орындалды (${Math.round((done / tasks.length) * 100)}%)`
+                : lang==='ENG'
+                ? `Completed ${done} of ${tasks.length} steps (${Math.round((done / tasks.length) * 100)}%)`
+                : `Выполнено ${done} из ${tasks.length} шагов (${Math.round((done / tasks.length) * 100)}%)`}
+            </div>
+            <div className="roadmap-progress-bar-track">
+              <div
+                className="roadmap-progress-bar-fill"
+                style={{ width: `${(done / tasks.length) * 100}%` }}
+              />
+            </div>
+
+            <div className="roadmap-timeline-list">
+              {tasks.map((tItem, i) => {
+                const isNext = i === next;
+                const dateVal = tItem.date || taskDates[i] || school.date || '2 февраля 2027';
+                const tagClass =
+                  tItem.tag === 'Документы'
+                    ? 'tag-doc'
+                    : tItem.tag === 'Активности'
+                    ? 'tag-act'
+                    : tItem.tag === 'Экзамены'
+                    ? 'tag-exam'
+                    : 'tag-dead';
+
+                const TagIcon =
+                  tItem.tag === 'Документы'
+                    ? FileText
+                    : tItem.tag === 'Активности'
+                    ? ChartBar
+                    : tItem.tag === 'Экзамены'
+                    ? GraduationCap
+                    : CalendarBlank;
+
+                const defaultDesc =
+                  i === 0
+                    ? 'Загрузи свою школьную выписку с оценками (перевод на английский).'
+                    : i === 1
+                    ? `Подтверди выбор программы ${school.bestProgramTitle || 'Computer Science'}.`
+                    : i === 2
+                    ? 'Запишись на экзамен и выбери удобную дату.'
+                    : i === 3
+                    ? 'Напиши черновик и получи обратную связь от AI.'
+                    : i === 4
+                    ? 'Пройди экзамен и загрузи официальный результат.'
+                    : 'Подготовь все документы и подай заявку в университет.';
+
+                return (
+                  <div key={tItem.name} className="roadmap-step-row">
+                    <div className="roadmap-indicator-col">
+                      <button
+                        type="button"
+                        aria-label={`${tItem.done ? 'Снять отметку' : 'Выполнить'}: ${tItem.name}`}
+                        className={`roadmap-step-circle ${tItem.done ? 'done' : isNext ? 'current' : 'upcoming'}`}
+                        onClick={() =>
+                          setTasks(tasks.map((x, j) => (j === i ? { ...x, done: !x.done } : x)))
+                        }
+                      >
+                        {tItem.done ? (
+                          <Check size={16} weight="bold" />
+                        ) : (
+                          <span>{i + 1}</span>
+                        )}
+                      </button>
+                      {i < tasks.length - 1 && (
+                        <div
+                          className={`roadmap-connector-line ${tItem.done && tasks[i + 1]?.done ? 'done' : ''}`}
+                        />
+                      )}
+                    </div>
+
+                    <div className={`roadmap-date-col ${isNext ? 'current' : ''}`}>
+                      {dateVal}
+                    </div>
+
+                    <div className="roadmap-task-box">
+                      <div className="roadmap-task-info">
+                        <span className="roadmap-task-title">{tItem.name}</span>
+                        <span className="roadmap-task-desc">{tItem.desc || defaultDesc}</span>
+                        {i === 3 && (
+                          <div style={{ marginTop: '0.6rem' }}>
+                            <EssayAssistant
+                              schoolName={school.name}
+                              interests={interests}
+                              gpa={gpa}
+                              lang={lang}
+                              onCopied={(msg) => setToast(msg)}
+                              defaultOpen={false}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="roadmap-task-meta">
+                        <span className={`roadmap-task-tag ${tagClass}`}>
+                          <TagIcon size={14} weight="bold" />
+                          <span>{tItem.tag}</span>
+                        </span>
+
+                        {tItem.done ? (
+                          <button
+                            type="button"
+                            className="roadmap-status-done-btn"
+                            onClick={() =>
+                              setTasks(tasks.map((x, j) => (j === i ? { ...x, done: false } : x)))
+                            }
+                          >
+                            <span>{lang==='KZ'?'Орындалды':lang==='ENG'?'Completed':'Выполнено'}</span>
+                            <Check size={13} weight="bold" />
+                          </button>
+                        ) : isNext ? (
+                          <button
+                            type="button"
+                            className="roadmap-status-next-btn"
+                            onClick={() => go(6)}
+                          >
+                            <span>{lang==='KZ'?'Өту':lang==='ENG'?'Start':'Перейти'}</span>
+                            <ArrowRight size={14} weight="bold" />
+                          </button>
+                        ) : (
+                          <span className="roadmap-status-future-badge">
+                            {lang==='KZ'?'Жақында':lang==='ENG'?'Soon':'Скоро'}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right Sidebar Card */}
+          <aside className="roadmap-sidebar-card">
+            <div className="roadmap-sidebar-eyebrow">
+              {lang==='KZ'?'СЕНІҢ МАҚСАТЫҢ':lang==='ENG'?'YOUR GOAL':'ТВОЯ ЦЕЛЬ'}
+            </div>
+            <img
+              src={['sdu', 'padua', 'nu'].includes(school.id) ? `/assets/campus-${school.id}.jpg` : '/assets/campus.png'}
+              onError={(e) => {
+                e.currentTarget.src = '/assets/campus-padua.jpg';
+              }}
+              alt={school.name}
+              className="roadmap-sidebar-img"
+            />
+            <h3 className="roadmap-sidebar-title">{school.name}</h3>
+            <p className="roadmap-sidebar-place">{school.place}</p>
+
+            <div className="roadmap-sidebar-row">
+              <GraduationCap size={20} weight="bold" className="roadmap-sidebar-row-icon" />
+              <div>
+                <small>{lang==='KZ'?'Бағыт':lang==='ENG'?'Major':'Направление'}</small>
+                <b>{school.bestProgramTitle || 'Computer Science'}</b>
+              </div>
+            </div>
+
+            <div className="roadmap-sidebar-row">
+              <CalendarBlank size={20} weight="bold" className="roadmap-sidebar-row-icon" />
+              <div>
+                <small>{lang==='KZ'?'Құжат тапсыру дедлайны':lang==='ENG'?'Application deadline':'Дедлайн подачи заявки'}</small>
+                <b>{school.date || '2 февраля 2027'}</b>
+              </div>
+            </div>
+
+            <div className="roadmap-sidebar-disclaimer">
+              <Info size={17} weight="bold" />
+              <span>
+                {lang==='KZ'
+                  ? 'Университет туралы деректер танысу мақсатында берілген және қабылдау туралы ресми ақпарат болып табылмайды.'
+                  : lang==='ENG'
+                  ? 'University details are provided for informational demonstration only and do not constitute official admission rules.'
+                  : 'Данные об университете приведены в ознакомительных целях и не являются официальной информацией о приёме.'}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              className="roadmap-sidebar-action-btn"
+              onClick={() => go(6)}
+            >
+              <span>{lang==='KZ'?'Келесі әрекетім':lang==='ENG'?'My Next Action':'Моё следующее действие'}</span>
+              <ArrowRight size={17} weight="bold" />
+            </button>
+
+            <button
+              type="button"
+              className="roadmap-sidebar-change-link"
+              onClick={() => go(3)}
+            >
+              {lang==='KZ'?'Мақсатты ЖОО-ны өзгерту':lang==='ENG'?'Change target university':'Изменить целевой вуз'}
+            </button>
+
+            <div className="roadmap-sidebar-motivation-box">
+              <Plant size={26} weight="fill" className="roadmap-motivation-icon" />
+              <div>
+                <b>{lang==='KZ'?'Дұрыс жолдасың!':lang==='ENG'?"You're on track!":'Ты на правильном пути!'}</b>
+                <p>
+                  {lang==='KZ'
+                    ? `Қазірдің өзінде ${done} қадам артта қалды. Осы қарқынмен жалғастыр!`
+                    : lang==='ENG'
+                    ? `Already ${done} steps done. Keep going!`
+                    : `Уже ${done} шага позади. Продолжай в том же духе!`}
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        {/* Bottom Footer Bar */}
+        <div className="step1-bottom-footer" style={{ marginTop: '10px' }}>
+          <div className="step1-footer-left">
+            <b>UniPath AI</b> — {lang==='KZ'?'білім әлеміндегі сенімді навигаторың':lang==='ENG'?'your education navigator':'твой навигатор в мире образования'}
+          </div>
+          <div className="step1-footer-date">
+            17 сентября 2026
+          </div>
+          <div className="roadmap-footer-disclaimer">
+            {lang==='KZ'
+              ? 'Күндер мен талаптар демонстрациялық мақсатта көрсетілген. Өзекті ақпаратты ЖОО ресми сайттарынан тексеріңіз.'
+              : lang==='ENG'
+              ? 'Dates and requirements are indicative demo data. Verify latest updates on official university sites.'
+              : 'Даты и требования указаны в демонстрационных целях. Проверь актуальную информацию на официальных сайтах вузов.'}
+          </div>
+        </div>
+      </div>
+    )}
     {step===6&&<><Title label={t.step6.eyebrow} title={next===-1?t.step6.titleFinished:t.step6.titleFocus} desc={t.step6.desc}/><div className="focus-card"><div className="focus-top"><span className="badge blue"><Sparkle/>{t.step6.topBadge}</span><span className="muted">{t.step6.completedCount(done)}</span></div><div className="focus-icon">{next===-1?<CheckCircle size={48}/>:next===2?<span className="ielts-wordmark" role="img" aria-label="IELTS">IELTS<sup>®</sup></span>:<CalendarBlank size={48}/>}</div><h2>{next===-1?'Маршрут завершён':tasks[next].name}</h2><p>{next===2?'Выбери удобный экзаменационный центр и дату. Оставь время на подготовку, получение результатов и возможную пересдачу.':next===3?'Собери факты о своих проектах и интересах. Объясни, почему именно эта программа поможет тебе достичь цели.':next===4?'Проверь дату экзамена, документы и формат. После экзамена добавь результат в свой профиль.':next===5?'Проверь комплект документов на официальном сайте. Отправь заявку и сохрани подтверждение.':next===-1?'Все шесть шагов отмечены. Проверь подтверждение подачи и следи за ответом университета.':'Подготовь данные и сохрани необходимые материалы.'}</p>{engineResult?.roadmap?.nextAction?.why&&<div style={{display:'flex',alignItems:'center',gap:'0.5rem',background:'rgba(23,101,237,0.06)',padding:'0.6rem 0.85rem',borderRadius:'8px',marginBottom:'1rem',fontSize:'0.88rem',color:'var(--primary)'}}><Sparkle size={18} weight="bold"/><span><b>Фокус движка:</b> {engineResult.roadmap.nextAction.why}</span></div>}{next>=0&&<div className="definition-done"><div><Clock size={16}/><b>{taskGuides[next][0]}</b><span>на этот этап</span></div><h3>{t.step6.howToKnow}</h3><p>{taskGuides[next][2]}</p></div>}<div className="resource"><div><b>{next===2||next===4?'Официальная запись на IELTS':'Приёмная комиссия университета'}</b><small>Проверь актуальные условия перед следующим шагом</small></div><a aria-label="Открыть официальный ресурс" href={next===2||next===4?'https://ielts.org/take-a-test/book-a-test':school.url} target="_blank" rel="noreferrer"><ArrowUpRight size={25}/></a></div>{next!==-1&&<button className="primary full" onClick={complete}>{t.step6.markDone} <Check size={22}/></button>}<div className="focus-bottom"><Clock size={18}/><span>{next===-1?'Все шаги завершены':t.step6.daysLeft(taskDays, tasks[next].date||school.date)}</span></div></div>{next===3&&<div style={{marginTop:'1.5rem',maxWidth:'680px',width:'100%',marginInline:'auto'}}><EssayAssistant schoolName={school.name} interests={interests} gpa={gpa} lang={lang} onCopied={msg=>setToast(msg)} defaultOpen={true}/></div>}<div style={{display:'flex',justifyContent:'center',gap:'1rem',marginTop:'1rem'}}><button className="text-button center" onClick={()=>go(5)}><ArrowLeft/>{t.step6.backRoadmap}</button><button className="text-button center" style={{display:'inline-flex',alignItems:'center',gap:'0.4rem'}} onClick={()=>window.print()}><FilePdf size={16}/>{lang==='KZ'?'Маршрутты PDF сақтау':lang==='ENG'?'Save PDF':'Сохранить в PDF'}</button></div></>}
    </>}</main><footer><span>{t.footer}</span><span>LOCUS Hackathon 2026 / <a href="/designs">{t.allDesigns}</a></span></footer>{toast&&<div className="toast" role="status"><CheckCircle/><span>{toast}</span><button onClick={undo}>Отменить</button><button aria-label="Закрыть уведомление" onClick={()=>setToast('')}>×</button></div>}
     <RoadmapPdfDocument school={school} tasks={tasks} taskDates={taskDates} taskGuides={taskGuides} gpa={gpa} ielts={ielts} ent={ent} sat={sat} budget={budget} interests={interests} countries={countries} achievements={achievements} lang={lang}/>
