@@ -10,7 +10,7 @@ import {DEMO_PRESETS, PitchPresetsRibbon} from './PitchPresets.jsx';
 import {getPersonalizedDiagnostics} from './diagnosticEngine.js';
 import {RoadmapPdfDocument} from './RoadmapPdf.jsx';
 import './roadmap-pdf.css';
-import {ArrowRight,ArrowLeft,Check,GraduationCap,GlobeHemisphereWest,Student,Sparkle,Target,MapTrifold,CheckCircle,WarningCircle,ArrowUpRight,Plus,Clock,ListChecks,Path,CalendarBlank,Lightning,FilePdf,ShieldCheck,TrendUp,Info,Coins,MapPin,Scales,Desktop,Gear,ChartBar,Stethoscope,Palette,Users,CaretDown,X} from '@phosphor-icons/react';
+import {ArrowRight,ArrowLeft,Check,GraduationCap,GlobeHemisphereWest,Student,Sparkle,Target,MapTrifold,CheckCircle,WarningCircle,ArrowUpRight,Plus,Clock,ListChecks,Path,CalendarBlank,Lightning,FilePdf,ShieldCheck,TrendUp,Info,Coins,MapPin,Scales,Desktop,Gear,ChartBar,Stethoscope,Palette,Users,CaretDown,X,HouseLine,FileText,CheckSquare,Warning} from '@phosphor-icons/react';
 import {UniversityLogo} from './components/UniversityLogo.jsx';
 import {UniPathLogo} from './components/UniPathLogo.jsx';
 import '@fontsource/inter/400.css';
@@ -18,7 +18,7 @@ import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import '@fontsource/inter/800.css';
-const defaultSchools=[{id:'sdu',name:'SDU University',nameRu:'SDU University',place:'Казахстан · Каскелен',type:'Safety',match:94,mark:'SDU',color:'green',cost:'$2 800',living:'$300–450',ielts:'6.0',sat:'Не требуется',date:'15 июля 2027',iso:'2027-07-15',url:'https://sdu.edu.kz/',why:['Направление Computer Science','Обучение рядом с домом'],risk:'Грант зависит от отдельного конкурса.',confidenceTitle:'Официально подтверждено',bestProgramTitle:'Компьютерные науки (бакалавриат)'},{id:'padua',name:'University of Padua',nameRu:'Университет Падуи',place:'Италия · Падуя',type:'Target',match:89,mark:'UP',color:'blue',cost:'$2 900',living:'$700–950',ielts:'6.5',sat:'Зависит от программы',date:'2 февраля 2027',iso:'2027-02-02',url:'https://www.unipd.it/en/',why:['Программы информационных технологий','Варианты стипендий по конкурсу'],risk:'Учти проживание и перевод документов.',confidenceTitle:'Официально подтверждено',bestProgramTitle:'Information Engineering & Computer Science'},{id:'nu',name:'Nazarbayev University',nameRu:'Назарбаев Университет',place:'Казахстан · Астана',type:'Reach',match:78,mark:'NU',color:'amber',cost:'Грант по конкурсу',living:'$350–550',ielts:'7.0',sat:'1 400',date:'15 января 2027',iso:'2027-01-15',url:'https://nu.edu.kz/',why:['Англоязычная академическая среда','Исследовательские проекты в IT'],risk:'Высокая конкуренция; проверь требования к тестам.',confidenceTitle:'Официально подтверждено',bestProgramTitle:'Инженерия и цифровые науки'}];
+const defaultSchools=[{id:'sdu',name:'SDU University',nameRu:'SDU University',place:'Казахстан · Алматы',type:'Safety',match:94,mark:'SDU',color:'green',cost:'$2 800',living:'$300–450',ielts:'6.0',sat:'Не требуется',date:'15 июля 2027',iso:'2027-07-15',url:'https://sdu.edu.kz/',why:['Направление Computer Science','Обучение рядом с домом'],risk:'Грант зависит от отдельного конкурса.',confidenceTitle:'Официально подтверждено',bestProgramTitle:'Компьютерные науки (бакалавриат)'},{id:'padua',name:'University of Padua',nameRu:'Университет Падуи',place:'Италия · Падуя',type:'Target',match:89,mark:'UNIPD',color:'blue',cost:'$2 900',living:'$700–950',ielts:'6.5',sat:'Зависит от программы',date:'2 февраля 2027',iso:'2027-02-02',url:'https://www.unipd.it/en/',why:['Программы информационных технологий','Варианты стипендий по конкурсу'],risk:'Учти проживание и перевод документов.',confidenceTitle:'Официально подтверждено',bestProgramTitle:'Information Engineering & Computer Science'},{id:'nu',name:'Nazarbayev University',nameRu:'Назарбаев Университет',place:'Казахстан · Астана',type:'Reach',match:78,mark:'NU',color:'amber',cost:'Грант по конкурсу',living:'$350–550',ielts:'7.0',sat:'1 400',date:'15 января 2027',iso:'2027-01-15',url:'https://nu.edu.kz/',why:['Англоязычная академическая среда','Исследовательские проекты в IT'],risk:'Высокая конкуренция; проверь требования к тестам.',confidenceTitle:'Официально подтверждено',bestProgramTitle:'Инженерия и цифровые науки'}];
 const initialTasks=[{name:'Добавить академическую выписку',date:'12 сентября',tag:'Документы',done:true},{name:'Определиться с направлением',date:'14 сентября',tag:'Активности',done:true},{name:'Выбрать дату IELTS',date:'23 сентября',tag:'Экзамены',done:false},{name:'Подготовить мотивационное письмо',date:'20 октября',tag:'Документы',done:false},{name:'Сдать IELTS и добавить результат',date:'10 ноября',tag:'Экзамены',done:false},{name:'Отправить заявку в университет',date:'',tag:'Дедлайны',done:false}];
 const catIcons=[Student,GraduationCap,GlobeHemisphereWest];
 function downloadIcsCalendar(tasks, school, taskDates) {
@@ -67,7 +67,7 @@ export function App(){
  const t=TRANSLATIONS[lang]||TRANSLATIONS.RU;
  const steps=t.steps;
  const categories=t.categories.map((c,i)=>[c.title,c.desc,catIcons[i]]);
- const [step,setStep]=useState(readStep),[category,setCategory]=useSavedState('category',0),[interests,setInterests]=useSavedState('interests',['IT']),[gpa,setGpa]=useSavedState('gpa',3.6),[ielts,setIelts]=useSavedState('ielts',6.5),[budget,setBudget]=useSavedState('budget',3000),[countries,setCountries]=useSavedState('countries',['Казахстан','Италия']),[achievements,setAchievements]=useSavedState('achievements',[]),[filter,setFilter]=useState('Все'),[compare,setCompare]=useSavedState('compare',['sdu','padua']),[favorite,setFavorite]=useSavedState('favorite','padua'),[tasks,setTasks]=useSavedState('tasks',initialTasks),[toast,setToast]=useState(''),[activePreset,setActivePreset]=useSavedState('activePreset',null);
+ const [step,setStep]=useState(readStep),[category,setCategory]=useSavedState('category',0),[interests,setInterests]=useSavedState('interests',['IT']),[gpa,setGpa]=useSavedState('gpa',3.6),[ielts,setIelts]=useSavedState('ielts',6.5),[budget,setBudget]=useSavedState('budget',3000),[countries,setCountries]=useSavedState('countries',['Казахстан','Италия']),[achievements,setAchievements]=useSavedState('achievements',[]),[filter,setFilter]=useState('Все'),[compare,setCompare]=useSavedState('compare',['sdu','padua','nu']),[favorite,setFavorite]=useSavedState('favorite','padua'),[tasks,setTasks]=useSavedState('tasks',initialTasks),[toast,setToast]=useState(''),[activePreset,setActivePreset]=useSavedState('activePreset',null);
  const [undoTasks,setUndoTasks]=useState(null);
  const [showLangMenu,setShowLangMenu]=useState(false);
  const [showPresets,setShowPresets]=useState(false);
@@ -230,14 +230,6 @@ export function App(){
           <p className="step1-hero-sub">
             {lang==='KZ'?'Өзің туралы айтып бер — біз жеке маршрут құрастырамыз.':lang==='ENG'?'Tell us about yourself — we will build a personalized roadmap.':'Расскажи о себе — мы соберём персональный маршрут.'}
           </p>
-          <div className="step1-handwriting-note">
-            <span className="step1-handwriting-text">
-              {lang==='KZ'?'Үлкен мақсатқа бірнеше қадам':lang==='ENG'?'A few steps to big goals':'Пару шагов до больших целей'}
-            </span>
-            <svg className="step1-handwriting-arrow" width="54" height="38" viewBox="0 0 54 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 4 C 20 2, 42 12, 46 32 M 46 32 L 38 26 M 46 32 L 50 22" stroke="#475569" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
         </div>
 
         <div className="step1-layout-grid">
@@ -617,7 +609,158 @@ export function App(){
     )}
     {step===2&&<><Title label={t.step2.eyebrow} title={gpa>=3.5?t.step2.titleHigh:t.step2.titleGrow} desc={t.step2.desc}/><div className={"profile-banner "+(gpa<3.5?"needs-growth":"")}><div><span className={"badge "+(gpa>=3.5?"green":"amber")}>{gpa>=3.5?t.step2.badgeHigh:t.step2.badgeGrow}</span><h2>{t.step2.bannerTitle}</h2><p>{interests.join(', ')} · {countries.join(', ')}</p></div><div className="stats"><div><b>{gpa.toFixed(1)}</b><span>GPA / 4.0</span></div><div><b>{ielts.toFixed(1)}</b><span>IELTS / 9.0</span></div>{ent&&<div><b>{ent}</b><span>ЕНТ / 140</span></div>}{sat&&<div><b>{sat}</b><span>SAT / 1600</span></div>}<div><b>{budget===0?t.step2.budgetGrant:`$${budget.toLocaleString('en-US')}`}</b><span>{t.step2.budgetPerYear}</span></div></div></div><div className="two-col"><section className="panel"><h3><CheckCircle className="green-text"/>{t.step2.strengthsTitle}</h3>{diagnostics.strengths.map((item,idx)=><Insight key={idx} good title={item.title} text={item.text}/>)}</section><section className="panel"><h3><WarningCircle className="amber-text"/>{t.step2.attentionTitle}</h3>{diagnostics.attentions.map((item,idx)=><Insight key={idx} title={item.title} text={item.text}/>)}</section></div><section className="strategy"><Sparkle size={28}/><div><div className="eyebrow">{t.step2.strategyEyebrow}</div><h2>{t.step2.strategyTitle}</h2><p>{t.step2.strategyDesc}</p></div></section>{notice}<div className="actions"><button className="secondary" onClick={()=>go(1)}>{t.step2.editProfile}</button><button className="primary" onClick={()=>go(3)}>{t.step2.nextUnis} <ArrowRight/></button></div></>}
     {step===3&&<><Title label={t.step3.eyebrow} title={t.step3.title} desc={t.step3.desc}/><div className="filter-row"><div className="tabs" role="tablist" aria-label="Фильтр категорий вузов"><button role="tab" aria-selected={filter==='Все'} className={filter==='Все'?'active':''} onClick={()=>setFilter('Все')}>{t.step3.allTab} ({schools.length})</button><button role="tab" aria-selected={filter==='Safety'} className={filter==='Safety'?'active':''} onClick={()=>setFilter('Safety')}><ShieldCheck size={16} weight="bold"/> Safety ({schools.filter(s=>s.type==='Safety').length})</button><button role="tab" aria-selected={filter==='Target'} className={filter==='Target'?'active':''} onClick={()=>setFilter('Target')}><Target size={16} weight="bold"/> Target ({schools.filter(s=>s.type==='Target').length})</button><button role="tab" aria-selected={filter==='Reach'} className={filter==='Reach'?'active':''} onClick={()=>setFilter('Reach')}><TrendUp size={16} weight="bold"/> Reach ({schools.filter(s=>s.type==='Reach').length})</button></div><button className="secondary compare-btn-nav" disabled={compare.length<2} onClick={()=>go(4)}><Scales size={18} weight="bold"/> {t.step3.compareBtn} <span className="count">{compare.length}</span></button></div><p className="small muted">{t.step3.safetyHint}</p><MatchDetails/><div className="university-grid">{schools.filter(s=>filter==='Все'||s.type===filter).map(s=><article className={"university panel tone-"+s.color} key={s.id}><div className="school-art" style={{backgroundImage:`url(/assets/campus-${s.id}.jpg), url(/assets/campus.png)`}} role="img" aria-label={`Кампус ${s.name}`} /><div className="school-body"><div className="school-header"><div className="school-emblem-wrap"><UniversityLogo id={s.id} mark={s.mark} size={42} /></div><div className="school-info-wrap"><h2 className="school-name">{s.name}</h2><div className="school-location"><MapPin size={13} weight="fill" /><span>{s.place}</span></div></div><div className={"school-badge " + s.type.toLowerCase()}>{s.type==='Safety'&&<ShieldCheck size={14} weight="bold" />}{s.type==='Target'&&<Target size={14} weight="bold" />}{s.type==='Reach'&&<TrendUp size={14} weight="bold" />}<span>{s.type}</span></div></div><div className="school-match-section"><div className="school-match-label-row"><span>Соответствие профилю</span><Info size={14} weight="bold" className="match-info-icon" title="Соответствие профилю рассчитывается на основе экзаменов, бюджета и требований программы" /></div><div className="school-match-score-row"><span className={"school-match-percent tone-" + s.color}>{s.match}%</span><div className="school-match-track"><span className={"school-match-fill tone-" + s.color} style={{width:`${s.match}%`}} /></div></div></div><div className="school-program-row"><GraduationCap size={22} weight="duotone" className="program-icon" /><div className="program-text"><small>Программа</small><b>{s.bestProgramTitle || 'Computer Science'}</b></div></div><div className="school-why-section"><h4>{lang==='KZ'?'Неліктен сәйкес келеді':lang==='ENG'?'Why it matches':'Почему подходит'}</h4>{s.why.slice(0, 2).map(x=><p className="reason-item" key={x}><CheckCircle size={16} weight="fill" className="why-check-icon" /><span>{x}</span></p>)}</div><div className="school-caution-box"><WarningCircle size={18} weight="fill" className="caution-icon" /><span>{s.risk}</span></div><div className="school-facts-grid"><div className="fact-col"><Coins size={20} weight="duotone" className="fact-icon" /><div className="fact-text"><small>{lang==='KZ'?'Оқу ақысы':lang==='ENG'?'Tuition fee':'Стоимость обучения'}</small><b>{s.cost}{s.cost.includes('$') || s.cost.includes('₸') ? ' / год' : ''}</b></div></div><div className="fact-col"><CalendarBlank size={20} weight="duotone" className="fact-icon" /><div className="fact-text"><small>{lang==='KZ'?'Құжат тапсыру мерзімі':lang==='ENG'?'Application deadline':'Крайний срок подачи'}</small><b>{s.date}</b></div></div></div><div className="school-card-actions"><label className="compare-checkbox-label"><input type="checkbox" checked={compare.includes(s.id)} onChange={()=>toggle(s.id,compare,setCompare)}/><span>{lang==='KZ'?'Салыстыруға қосу':lang==='ENG'?'Add to compare':'Добавить к сравнению'}</span></label><a href={s.url} target="_blank" rel="noreferrer" className="official-link">{t.step3.officialSite || 'Официальный сайт'} <ArrowUpRight size={13} /></a></div><button className="primary full select-target-cta" onClick={()=>select(s.id)}>{t.step3.setTarget || 'Выбрать целевым'}</button></div></article>)}</div>{notice}<div className="compare-tray"><div><b>{t.step3.trayTitle} <span className="count">{compare.length} / 3</span></b><p>{compare.length>=2?t.step3.traySubReady:t.step3.traySubNeed}</p></div><div className="selected-schools">{schools.filter(s=>compare.includes(s.id)).map(s=><button key={s.id} aria-label={`Убрать ${s.name} из сравнения`} onClick={()=>toggle(s.id,compare,setCompare)}>{s.mark} <span>×</span></button>)}</div><button className="primary" disabled={compare.length<2} onClick={()=>go(4)}>{t.step3.compareBtn} {compare.length>0&&compare.length}<ArrowRight/></button></div></>}
-   {step===4&&<><Title label={t.step4.eyebrow} title={t.step4.title} desc={t.step4.desc}/><div className="comparison-tools"><span className="small muted">{compare.length} из {schools.length} вариантов · голубым выделена текущая цель</span><button className="text-button" onClick={()=>go(3)}><Plus/>{t.step4.changeList}</button></div><p className="small muted mobile-hint">Листай таблицу вправо, чтобы увидеть остальные вузы →</p><div className="comparison-wrap" role="region" aria-label="Сравнение университетов" tabIndex={0}>{compare.length>0&&<table><thead><tr><th>Что важно для тебя</th>{schools.filter(s=>compare.includes(s.id)).map(s=><th key={s.id} className={s.id===favorite?'favored':''}><span className={'badge '+s.color}>{s.type}</span><h2>{s.name}</h2><span className="muted">{s.place}</span><button className="remove-school" aria-label={`Убрать ${s.name} из сравнения`} onClick={()=>toggle(s.id,compare,setCompare)}>{t.step4.removeSchool}</button></th>)}</tr></thead><tbody>{[[t.step4.rowTuition,'cost'],[t.step4.rowLiving,'living'],[t.step4.rowIelts,'ielts'],[t.step4.rowSat,'sat'],[t.step4.rowDeadline,'date'],['Достоверность данных','confidenceTitle'],[t.step4.rowGrants,null],[t.step4.rowAcceptRate,null]].map(([title,key],i)=><tr key={title}><th>{title}</th>{schools.filter(s=>compare.includes(s.id)).map(s=><td key={s.id} className={s.id===favorite?'favored':''}>{key?s[key]:i===6?'По отдельному конкурсу':'Нет проверенных данных'}</td>)}</tr>)}<tr><th>{t.step4.nextStepHeader}</th>{schools.filter(s=>compare.includes(s.id)).map(s=><td key={s.id} className={s.id===favorite?'favored':''}><button className="primary" onClick={()=>select(s.id)}>{t.step4.confirmRoadmap} <ArrowRight/></button></td>)}</tr></tbody></table>}{compare.length<2&&<p className="empty">{t.step4.emptyHint} <button className="text-button" onClick={()=>go(3)}>Выбрать вузы →</button></p>}</div>{notice}</>}
+    {step===4&&(
+      <div className="compare-screen-wrap">
+        <div className="compare-hero-section">
+          <h1 className="compare-hero-title">
+            {lang==='KZ'?'Әртүрлі жолдар. Барлық мәлімет қатар.':lang==='ENG'?'Different paths. All details side-by-side.':'Разные пути. Все детали рядом.'}
+          </h1>
+          <p className="compare-hero-sub">
+            {lang==='KZ'?'Бастысын салыстырып, өз маршрутыңызға университетті таңдаңыз.':lang==='ENG'?'Compare the essentials and choose the target university for your roadmap.':'Сравни главное и выбери университет для своего маршрута.'}
+          </p>
+        </div>
+
+        <div className="compare-grid-wrap">
+          {/* Column 1: Parameters */}
+          <div className="compare-col-card compare-params-card">
+            <div className="compare-card-head">
+              <span className="compare-params-head-title">
+                {lang==='KZ'?'Параметр':lang==='ENG'?'Parameter':'Параметр'}
+              </span>
+            </div>
+            <div className="compare-row-item compare-param-item">
+              <MapPin size={18} weight="bold" className="compare-param-icon" />
+              <span>{lang==='KZ'?'Ел / Қала':lang==='ENG'?'Country / City':'Страна / Город'}</span>
+            </div>
+            <div className="compare-row-item compare-param-item">
+              <Coins size={18} weight="bold" className="compare-param-icon" />
+              <span>{lang==='KZ'?'Жылдық оқу ақысы (USD)':lang==='ENG'?'Annual Tuition (USD)':'Годовая стоимость обучения (USD)'}</span>
+            </div>
+            <div className="compare-row-item compare-param-item">
+              <HouseLine size={18} weight="bold" className="compare-param-icon" />
+              <span>{lang==='KZ'?'Айлық өмір сүру шығыны (USD)':lang==='ENG'?'Monthly Living (USD)':'Примерные расходы на жизнь в месяц (USD)'}</span>
+            </div>
+            <div className="compare-row-item compare-param-item">
+              <FileText size={18} weight="bold" className="compare-param-icon" />
+              <span>{lang==='KZ'?'Талап етілетін IELTS (минимум)':lang==='ENG'?'Required IELTS (minimum)':'Требуемый IELTS (минимум)'}</span>
+            </div>
+            <div className="compare-row-item compare-param-item">
+              <ChartBar size={18} weight="bold" className="compare-param-icon" />
+              <span>{lang==='KZ'?'Талап етілетін SAT (минимум)':lang==='ENG'?'Required SAT (minimum)':'Требуемый SAT (минимум)'}</span>
+            </div>
+            <div className="compare-row-item compare-param-item">
+              <GraduationCap size={18} weight="bold" className="compare-param-icon" />
+              <span>{lang==='KZ'?'Гранттар мен қаржылық көмек':lang==='ENG'?'Grants & Financial Aid':'Гранты и финансовая помощь'}</span>
+            </div>
+            <div className="compare-row-item compare-param-item">
+              <CalendarBlank size={18} weight="bold" className="compare-param-icon" />
+              <span>{lang==='KZ'?'Құжат тапсырудың соңғы күні (2027)':lang==='ENG'?'Application Deadline (2027)':'Крайний срок подачи заявки (на intake 2027)'}</span>
+            </div>
+            <div className="compare-row-item compare-param-item">
+              <Users size={18} weight="bold" className="compare-param-icon" />
+              <span>{lang==='KZ'?'Қабылдану көрсеткіші':lang==='ENG'?'Acceptance Rate':'Процент зачисления'}</span>
+            </div>
+            <div className="compare-action-row compare-param-item">
+              <CheckSquare size={18} weight="bold" className="compare-param-icon" />
+              <span>{lang==='KZ'?'Университетті таңдау':lang==='ENG'?'Select University':'Выбрать университет'}</span>
+            </div>
+          </div>
+
+          {/* Columns 2+: University Cards */}
+          {(schools.filter(s=>compare.includes(s.id)).length>=2
+            ? schools.filter(s=>compare.includes(s.id))
+            : schools.slice(0, 3)
+          ).map((s) => {
+            const isFavored = s.id === favorite;
+            return (
+              <div key={s.id} className={`compare-col-card ${isFavored ? 'favored' : ''}`}>
+                <div className="compare-card-head">
+                  <div className="compare-uni-head-info">
+                    <span className="compare-uni-mark">{s.mark || s.id.toUpperCase()}</span>
+                    <span className="compare-uni-fullname">{s.name}</span>
+                  </div>
+                  <span className={`compare-badge-pill ${s.type.toLowerCase()}`}>{s.type}</span>
+                </div>
+                <div className="compare-row-item">
+                  <span>{s.place?.replace(' · ', ', ') || s.place}</span>
+                </div>
+                <div className="compare-row-item">
+                  <span>{s.cost}</span>
+                </div>
+                <div className="compare-row-item">
+                  <span>{s.living || '$400–600'}</span>
+                </div>
+                <div className="compare-row-item">
+                  <span>{s.ielts || '6.0'}</span>
+                </div>
+                <div className="compare-row-item">
+                  <span>{s.sat || 'Не требуется'}</span>
+                </div>
+                <div className="compare-row-item">
+                  <span>{lang==='KZ'?'Конкурс бойынша':lang==='ENG'?'By competition':'По конкурсу'}</span>
+                </div>
+                <div className="compare-row-item">
+                  <span>{s.date || '15 июля 2027'}</span>
+                </div>
+                <div className="compare-row-item">
+                  <span>{lang==='KZ'?'Тексерілген деректер жоқ':lang==='ENG'?'No verified data':'Нет проверенных данных'}</span>
+                </div>
+                <div className="compare-action-row">
+                  <button
+                    type="button"
+                    className={`compare-action-btn ${isFavored ? 'favored' : ''}`}
+                    onClick={() => {
+                      setFavorite(s.id);
+                    }}
+                  >
+                    {lang==='KZ'?'Roadmap үшін бекіту':lang==='ENG'?'Confirm for Roadmap':'Утвердить для Roadmap'}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Warning Banner */}
+        <div className="compare-warning-box">
+          <Warning size={20} weight="bold" className="compare-warning-icon" />
+          <span>
+            {lang==='KZ'
+              ? 'Көрсетілген университет мысалдары мен ақпарат демонстрациялық сипатта. Бұл қабылдау ережелері туралы ресми деректер емес. ЖОО сайттарынан нақты талаптарды тексеріңіз.'
+              : lang==='ENG'
+              ? 'The university examples and information provided are for demonstration purposes only. This is not official admissions data. Verify official criteria on university websites.'
+              : 'Приведённые примеры университетов и информация носят демонстрационный характер. Это не официальные данные о правилах приёма. Проверь актуальные требования на сайтах университетов.'}
+          </span>
+        </div>
+
+        {/* Bottom Footer Bar */}
+        <div className="step1-bottom-footer" style={{ marginTop: '10px' }}>
+          <div className="step1-footer-left">
+            <b>UniPath AI</b> — {lang==='KZ'?'білім әлеміндегі сенімді навигаторың':lang==='ENG'?'your education navigator':'твой навигатор в мире образования'}
+          </div>
+          <div className="step1-footer-date">
+            17 сентября 2026
+          </div>
+          <div className="step1-footer-actions">
+            <button
+              type="button"
+              className="step1-save-btn"
+              onClick={() => setToast(lang==='KZ'?'Сақталды!':lang==='ENG'?'Saved!':'Сохранено в браузере!')}
+            >
+              {lang==='KZ'?'Сақтау және шығу':lang==='ENG'?'Save & Exit':'Сохранить и выйти'}
+            </button>
+            <button
+              type="button"
+              className="step1-cta-next"
+              onClick={() => go(5)}
+            >
+              <span>{lang==='KZ'?'Маршрутқа жалғастыру':lang==='ENG'?'Continue to Roadmap':'Продолжить к маршруту'}</span>
+              <ArrowRight size={18} weight="bold" />
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     {step===5&&<><Title label={t.step5.eyebrow} title={t.step5.title} desc={t.step5.desc(school.name)}/><div className="roadmap-layout"><section><div className="progress-panel"><div><b>{t.step5.progressDone(done)}</b><strong>{Math.round(done/6*100)}%</strong></div><div className="progress-track" role="progressbar" aria-label="Прогресс маршрута" aria-valuemin={0} aria-valuemax={6} aria-valuenow={done}><span style={{width:`${done/6*100}%`}}/></div><p className="muted small">{done===6?t.step5.allDone:t.step5.keepGoing}</p></div><div className="timeline">{tasks.map((tItem,i)=><div key={tItem.name} className={'task '+(tItem.done?'done':'')+(i===next?' next':'')}><button className="task-check" aria-label={`${tItem.done?'Снять отметку':'Выполнить'}: ${tItem.name}`} aria-pressed={tItem.done} onClick={()=>setTasks(tasks.map((x,j)=>j===i?{...x,done:!x.done}:x))}>{tItem.done&&<Check weight="bold"/>}</button><div className="task-content"><div className="task-meta"><span>{tItem.date||school.date}</span><span className={'badge '+({Экзамены:'blue',Документы:'slate',Дедлайны:'amber',Активности:'green'}[tItem.tag])}>{tItem.tag}</span></div><h3>{tItem.name}</h3><p>{tItem.done?t.step5.stepDone:i===next?t.step5.stepNext:t.step5.stepPlan}</p><details className="task-details"><summary>{t.step5.detailsPrep}</summary><p>{taskGuides[i][1]}</p><small><Clock size={13}/> {taskGuides[i][0]}</small></details>{i===3&&<div style={{marginTop:'0.85rem'}}><EssayAssistant schoolName={school.name} interests={interests} gpa={gpa} lang={lang} onCopied={msg=>setToast(msg)} defaultOpen={false}/></div>}</div>{i===next&&<button className="icon-button" aria-label="Открыть следующий шаг" onClick={()=>go(6)}><ArrowRight/></button>}</div>)}</div></section><aside className="side-note"><div className="eyebrow">{t.step5.sideGoal}</div><img className="side-campus" src={['sdu','padua','nu'].includes(school.id)?`/assets/campus-${school.id}.png`:'/assets/campus.png'} alt="Иллюстрация кампуса, не официальное фото"/><span className="large-icon"><GraduationCap size={32}/></span><h2>{school.name}</h2><p>{school.place}</p><hr/><p className="small">{t.step5.sideDeadline}</p><h3>{school.date}</h3><button className="primary full" onClick={()=>go(6)}>{t.step5.sideNextBtn} <ArrowRight/></button><button className="secondary full" style={{marginTop:'0.6rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.5rem'}} onClick={()=>{downloadIcsCalendar(tasks,school,taskDates);setToast(t.step5.calendarSaved);}}><CalendarBlank size={18}/>{t.step5.exportCalendar}</button><button className="secondary full" style={{marginTop:'0.45rem',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.5rem'}} onClick={()=>window.print()}><FilePdf size={18}/>{lang==='KZ'?'Маршрутты PDF жүктеу':lang==='ENG'?'Download Roadmap (PDF)':'Скачать маршрут в PDF'}</button><button className="text-button full" onClick={()=>go(3)}>{t.step5.sideChangeUni}</button></aside></div>{notice}</>}
     {step===6&&<><Title label={t.step6.eyebrow} title={next===-1?t.step6.titleFinished:t.step6.titleFocus} desc={t.step6.desc}/><div className="focus-card"><div className="focus-top"><span className="badge blue"><Sparkle/>{t.step6.topBadge}</span><span className="muted">{t.step6.completedCount(done)}</span></div><div className="focus-icon">{next===-1?<CheckCircle size={48}/>:next===2?<span className="ielts-wordmark" role="img" aria-label="IELTS">IELTS<sup>®</sup></span>:<CalendarBlank size={48}/>}</div><h2>{next===-1?'Маршрут завершён':tasks[next].name}</h2><p>{next===2?'Выбери удобный экзаменационный центр и дату. Оставь время на подготовку, получение результатов и возможную пересдачу.':next===3?'Собери факты о своих проектах и интересах. Объясни, почему именно эта программа поможет тебе достичь цели.':next===4?'Проверь дату экзамена, документы и формат. После экзамена добавь результат в свой профиль.':next===5?'Проверь комплект документов на официальном сайте. Отправь заявку и сохрани подтверждение.':next===-1?'Все шесть шагов отмечены. Проверь подтверждение подачи и следи за ответом университета.':'Подготовь данные и сохрани необходимые материалы.'}</p>{engineResult?.roadmap?.nextAction?.why&&<div style={{display:'flex',alignItems:'center',gap:'0.5rem',background:'rgba(23,101,237,0.06)',padding:'0.6rem 0.85rem',borderRadius:'8px',marginBottom:'1rem',fontSize:'0.88rem',color:'var(--primary)'}}><Sparkle size={18} weight="bold"/><span><b>Фокус движка:</b> {engineResult.roadmap.nextAction.why}</span></div>}{next>=0&&<div className="definition-done"><div><Clock size={16}/><b>{taskGuides[next][0]}</b><span>на этот этап</span></div><h3>{t.step6.howToKnow}</h3><p>{taskGuides[next][2]}</p></div>}<div className="resource"><div><b>{next===2||next===4?'Официальная запись на IELTS':'Приёмная комиссия университета'}</b><small>Проверь актуальные условия перед следующим шагом</small></div><a aria-label="Открыть официальный ресурс" href={next===2||next===4?'https://ielts.org/take-a-test/book-a-test':school.url} target="_blank" rel="noreferrer"><ArrowUpRight size={25}/></a></div>{next!==-1&&<button className="primary full" onClick={complete}>{t.step6.markDone} <Check size={22}/></button>}<div className="focus-bottom"><Clock size={18}/><span>{next===-1?'Все шаги завершены':t.step6.daysLeft(taskDays, tasks[next].date||school.date)}</span></div></div>{next===3&&<div style={{marginTop:'1.5rem',maxWidth:'680px',width:'100%',marginInline:'auto'}}><EssayAssistant schoolName={school.name} interests={interests} gpa={gpa} lang={lang} onCopied={msg=>setToast(msg)} defaultOpen={true}/></div>}<div style={{display:'flex',justifyContent:'center',gap:'1rem',marginTop:'1rem'}}><button className="text-button center" onClick={()=>go(5)}><ArrowLeft/>{t.step6.backRoadmap}</button><button className="text-button center" style={{display:'inline-flex',alignItems:'center',gap:'0.4rem'}} onClick={()=>window.print()}><FilePdf size={16}/>{lang==='KZ'?'Маршрутты PDF сақтау':lang==='ENG'?'Save PDF':'Сохранить в PDF'}</button></div></>}
    </>}</main><footer><span>{t.footer}</span><span>LOCUS Hackathon 2026 / <a href="/designs">{t.allDesigns}</a></span></footer>{toast&&<div className="toast" role="status"><CheckCircle/><span>{toast}</span><button onClick={undo}>Отменить</button><button aria-label="Закрыть уведомление" onClick={()=>setToast('')}>×</button></div>}
