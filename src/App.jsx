@@ -139,6 +139,7 @@ export function App(){
         </div>
 
         <div className="modern-topbar-actions">
+          <a href="/presentation" style={{color:'#1765ed',fontSize:'13px',fontWeight:600,marginRight:'12px',display:'inline-flex',alignItems:'center',gap:'4px'}}><ChartBar size={15} weight="bold"/>{lang==='KZ'?'Слайдтар':lang==='ENG'?'Deck':'Слайды (8)'}</a>
           <a href="/designs" style={{color:'#64748b',fontSize:'13px',fontWeight:500,marginRight:'8px'}}>{t.allDesigns}</a>
 
           <div className="modern-lang-dropdown">
@@ -983,6 +984,61 @@ export function App(){
             >
               {lang==='KZ'?'Мақсатты ЖОО-ны өзгерту':lang==='ENG'?'Change target university':'Изменить целевой вуз'}
             </button>
+
+            <div className="roadmap-sidebar-export-group" style={{display:'flex',flexDirection:'column',gap:'0.5rem',margin:'0.75rem 0'}}>
+              <button
+                type="button"
+                className="roadmap-export-ics-btn"
+                style={{
+                  display:'flex',
+                  alignItems:'center',
+                  justifyContent:'center',
+                  gap:'0.5rem',
+                  padding:'0.65rem 1rem',
+                  borderRadius:'10px',
+                  border:'1px solid #cbd5e1',
+                  background:'#fff',
+                  color:'#1e293b',
+                  fontSize:'13px',
+                  fontWeight:600,
+                  cursor:'pointer',
+                  width:'100%',
+                  boxShadow:'0 1px 2px rgba(0,0,0,0.04)'
+                }}
+                onClick={() => {
+                  downloadIcsCalendar(tasks, school, taskDates);
+                  setToast(lang==='KZ'?'Күнтізбе (.ics) жүктелді!':lang==='ENG'?'Calendar (.ics) exported!':'Календарь дедлайнов (.ics) сохранён!');
+                }}
+              >
+                <CalendarBlank size={17} weight="bold" style={{color:'#1765ed'}} />
+                <span>{lang==='KZ'?'Күнтізбеге экспорт (.ics)':lang==='ENG'?'Export Calendar (.ics)':'Экспорт в календарь (.ics)'}</span>
+              </button>
+
+              <button
+                type="button"
+                className="roadmap-export-pdf-btn"
+                style={{
+                  display:'flex',
+                  alignItems:'center',
+                  justifyContent:'center',
+                  gap:'0.5rem',
+                  padding:'0.65rem 1rem',
+                  borderRadius:'10px',
+                  border:'1px solid #cbd5e1',
+                  background:'#fff',
+                  color:'#1e293b',
+                  fontSize:'13px',
+                  fontWeight:600,
+                  cursor:'pointer',
+                  width:'100%',
+                  boxShadow:'0 1px 2px rgba(0,0,0,0.04)'
+                }}
+                onClick={() => window.print()}
+              >
+                <FilePdf size={17} weight="bold" style={{color:'#e11d48'}} />
+                <span>{lang==='KZ'?'Маршрутты PDF сақтау':lang==='ENG'?'Download Plan (PDF)':'Скачать план (PDF)'}</span>
+              </button>
+            </div>
 
             <div className="roadmap-sidebar-motivation-box">
               <Plant size={26} weight="fill" className="roadmap-motivation-icon" />

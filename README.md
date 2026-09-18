@@ -48,18 +48,16 @@
 
 ---
 
-## 🏛 База университетов в движке
+## 🏛 База университетов в движке (36 институтов)
 
-* 🇰🇿 **Назарбаев Университет (NU)** — международный бакалавриат, требования IELTS/SAT.
-* 🇰🇿 **КБТУ (KBTU)** — IT-направление, профильная пара Мат + Инф, общий конкурс и сельская квота.
-* 🇰🇿 **SDU University** — IT и инженерия, грантовые программы.
-* 🇰🇿 **МУИТ (IITU)** — цифровые технологии и инженерия.
-* 🇰🇿 **КазНУ им. аль-Фараби** — фундаментальные науки и IT.
-* 🇰🇿 **Satbayev University** — робототехника и инженерия (Мат + Физ).
-* 🇰🇿 **КазНМУ им. С.Д. Асфендиярова** — медицина (Био + Хим, порог 70).
-* 🇰🇿 **Университет Нархоз** — экономика, аудит, финансы (Мат + Гео).
-* 🇰🇷 **KAIST** — Южная Корея, STEM, стипендия KAIST Scholarship.
-* 🇮🇹 **University of Padua (Университет Падуи)** — Италия, бакалавриат на английском, региональный грант Veneto DSU.
+Движок поддерживает **36 верифицированных университетов** в 6 ключевых направлениях абитуриентов Центральной Азии, с реальными фотографиями кампусов, ссылками на приёмные комиссии и требованиями:
+
+* 🇰🇿 **Казахстан (12 вузов):** Назарбаев Университет (NU), КБТУ, SDU, МУИТ, КазНУ им. аль-Фараби, Satbayev University, КазНМУ им. Асфендиярова, Нархоз, Astana IT University (AITU), MNU (КАЗГЮУ), АО «МУА» (Медицинский университет Астана), КазГАСА.
+* 🇺🇸 **США (11 вузов):** Harvard University, MIT, Stanford University, UC Berkeley, Columbia University, Carnegie Mellon University (CMU), Georgia Tech, New York University (NYU), Purdue University, University of Washington, Arizona State University (ASU).
+* 🇩🇪 **Германия (3 вуза):** Technical University of Munich (TUM), Heidelberg University, RWTH Aachen University (бесплатное образование, взносы €150–350/сем).
+* 🇮🇹 **Италия (3 вуза):** University of Padua (региональная стипендия Veneto DSU), Bocconi University (топ бизнес и экономика), Politecnico di Milano (топ архитектура и инженерия).
+* 🇰🇷 **Южная Корея (4 вуза):** KAIST (100% стипендия), Seoul National University (SNU), Yonsei University, Korea University (SKY).
+* 🇹🇷 **Турция (3 вуза):** Koç University, Middle East Technical University (METU), Bilkent University (стипендии Türkiye Bursları).
 
 ---
 
@@ -68,7 +66,7 @@
 * **Frontend:** React 19, Vite 6, Tailwind CSS, Phosphor Icons, Fontsource Inter.
 * **Admission Engine SDK:** TypeScript, Zod v4, детерминированные алгоритмы скоринга и таймлайна (`src/lib/admission`).
 * **Интернационализация:** полная триязычность (Русский, Казахский, Английский).
-* **Тестирование:** Vitest (63 автоматизированных теста логики квот, шкал и экзаменов — 100% pass).
+* **Тестирование:** Vitest (67 автоматизированных тестов логики квот, шкал и экзаменов — 100% pass).
 * **Архитектура:** Local-first, Privacy-first (все данные абитуриента защищены и сохраняются локально в `localStorage`).
 
 ---
