@@ -9,6 +9,7 @@ import {
   STUDY_FIELD_TITLES,
   ENT_MAX_TOTAL,
   entTotal,
+  toUsd,
 } from './lib/admission/index';
 
 const FIELD_MAP = {
@@ -79,6 +80,24 @@ const COUNTRY_LIVING_COSTS = {
   IT: '$700–950/мес',
   KR: '$700–1 000/мес',
 };
+
+export function formatTuitionCost(tuition, countryCode = 'KZ') {
+  if (!tuition || typeof tuition.amount !== 'number') return 'Грант по конкурсу';
+  if (tuition.amount === 0) return 'Бесплатно (грант)';
+
+  if (countryCode !== 'KZ') {
+    if (tuition.currency === 'USD') {
+      return `$${tuition.amount.toLocaleString('en-US')}`;
+    }
+    const usdVal = Math.round(toUsd(tuition));
+    return `$${usdVal.toLocaleString('en-US')}`;
+  }
+
+  if (tuition.currency === 'USD') {
+    return `$${tuition.amount.toLocaleString('en-US')}`;
+  }
+  return `${tuition.amount.toLocaleString('ru-RU')} ₸`;
+}
 
 export const INSTITUTION_RISKS = {
   // США
@@ -276,12 +295,9 @@ export function evaluateAdmissionState(inputs) {
         reasons.push(`Программа: ${bestMatch.program.title.ru}`, 'Доступны актуальные траектории приёма');
       }
 
+      const countryCode = bestMatch.institution.country || 'KZ';
       const tuition = bestMatch.program.tuitionPerYear;
-      const formattedCost = tuition
-        ? tuition.currency === 'USD'
-          ? `$${tuition.amount.toLocaleString('en-US')}`
-          : `${tuition.amount.toLocaleString('ru-RU')} ₸`
-        : 'Грант по конкурсу';
+      const formattedCost = formatTuitionCost(tuition, countryCode);
 
       // Tailored institutional and contextual risk analysis
       let risk = INSTITUTION_RISKS[institution.id] || null;
@@ -294,7 +310,6 @@ export function evaluateAdmissionState(inputs) {
         }
       }
 
-      const countryCode = bestMatch.institution.country || 'KZ';
       const deadlineInfo = INSTITUTION_DEADLINES[institution.id] || COUNTRY_DEADLINES[countryCode] || { date: '15 июля 2027', iso: '2027-07-15' };
       const livingCost = COUNTRY_LIVING_COSTS[countryCode] || '$500–800/мес';
 

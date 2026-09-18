@@ -2352,7 +2352,7 @@ export const INSTITUTIONS_RAW = [
         durationYears: 3,
         fields: ['economics', 'management', 'law'],
         languages: ['en'],
-        tuitionPerYear: { amount: 16500, currency: 'EUR' },
+        tuitionPerYear: { amount: 17900, currency: 'USD' },
         keywords: ['Bocconi', 'finance', 'economics', 'investment banking', 'Milan', 'Italy'],
         url: 'https://www.unibocconi.it/en/programs/bachelor-of-science/international-economics-and-finance',
         tracks: [
@@ -2422,7 +2422,7 @@ export const INSTITUTIONS_RAW = [
         durationYears: 6,
         fields: ['medicine', 'natural_sciences', 'law'],
         languages: ['de', 'en'],
-        tuitionPerYear: { amount: 3000, currency: 'EUR' },
+        tuitionPerYear: { amount: 3260, currency: 'USD' },
         keywords: ['Heidelberg', 'medicine', 'biotechnology', 'Germany', 'Europe oldest university'],
         url: 'https://www.uni-heidelberg.de/en/study/all-subjects/medicine',
         tracks: [

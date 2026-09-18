@@ -274,5 +274,45 @@ describe('веса и группировка', () => {
       expect(sdu.risk).toMatch(/Конкуренция|ЕНТ|олимпиад/i);
     }
   });
+
+  it('корректно форматирует валюту: зарубежные вузы (Bocconi, Heidelberg, США) в $, казахстанские в ₸', async () => {
+    const { evaluateAdmissionState } = await import('../src/admissionBridge.js');
+    const res = evaluateAdmissionState({
+      name: 'Test Student',
+      countries: ['IT', 'DE', 'KZ', 'US'],
+      fields: ['medicine', 'economics', 'it'],
+      budgetUsdPerYear: 50000,
+      ent: 110,
+      ielts: 7.0,
+      sat: 1450,
+      gpa: 3.9,
+    });
+
+    const schools = res.schools;
+
+    // Bocconi: зарубежный вуз, должен отображаться в $, ни в коем случае не в ₸
+    const bocconi = schools.find((s) => s.id === 'bocconi');
+    expect(bocconi).toBeDefined();
+    expect(bocconi!.cost).toContain('$');
+    expect(bocconi!.cost).not.toContain('₸');
+
+    // Heidelberg: Германия, должен отображаться в $, не в ₸
+    const heidelberg = schools.find((s) => s.id === 'heidelberg');
+    expect(heidelberg).toBeDefined();
+    expect(heidelberg!.cost).toContain('$');
+    expect(heidelberg!.cost).not.toContain('₸');
+
+    // NU: Казахстан, но стоимость в USD
+    const nu = schools.find((s) => s.id === 'nu');
+    expect(nu).toBeDefined();
+    expect(nu!.cost).toContain('$');
+
+    // Казахстанские вузы с тенге (например КБТУ или СДУ)
+    const kbtu = schools.find((s) => s.id === 'kbtu');
+    if (kbtu && kbtu.cost !== 'Грант по конкурсу') {
+      expect(kbtu.cost).toContain('₸');
+    }
+  });
 });
+
 
