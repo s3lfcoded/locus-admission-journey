@@ -5,6 +5,7 @@ import "./styles.css";
 import "./kit.css";
 import "./design-v2.css";
 import "./final-fixes.css";
+import "./profile-redesign.css";
 import "flag-icons/css/flag-icons.min.css";
 
 createRoot(document.getElementById("root")).render(
@@ -13,3 +14,4 @@ createRoot(document.getElementById("root")).render(
   </React.StrictMode>,
 );
 import "./experience.css";
+
