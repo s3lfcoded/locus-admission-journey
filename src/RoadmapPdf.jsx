@@ -1,5 +1,11 @@
-import React from 'react';
-import {CheckCircle, Clock, WarningCircle, Path, ShieldCheck} from '@phosphor-icons/react';
+import {CheckCircle, Clock, WarningCircle, Path, ShieldCheck, Sparkle} from '@phosphor-icons/react';
+import {TASK_TITLES_BY_LANG, TASK_TAGS_BY_LANG} from './Experience.jsx';
+
+const TASK_DATES_BY_LANG = {
+  RU: ['12 сентября', '14 сентября', '23 сентября', '20 октября', '10 ноября'],
+  KZ: ['12 қыркүйек', '14 қыркүйек', '23 қыркүйек', '20 қазан', '10 қараша'],
+  ENG: ['12 September', '14 September', '23 September', '20 October', '10 November']
+};
 
 export function RoadmapPdfDocument({
   school,
@@ -127,19 +133,24 @@ export function RoadmapPdfDocument({
           <tbody>
             {tasks.map((task, idx) => {
               const guide = taskGuides[idx] || ['1–2 часа', '', ''];
+              const localizedTitle = TASK_TITLES_BY_LANG[lang]?.[idx] || task.name;
+              const defaultDates = TASK_DATES_BY_LANG[lang] || TASK_DATES_BY_LANG.RU;
+              const displayDate = idx === 5 ? (school.date || '15 июля 2027') : (defaultDates[idx] || task.date || school.date);
+              const tagMap = TASK_TAGS_BY_LANG[lang] || TASK_TAGS_BY_LANG.RU;
+              const localizedTag = task.tag === 'Документы' ? tagMap.Documents : task.tag === 'Активности' ? tagMap.Activities : task.tag === 'Экзамены' ? tagMap.Exams : tagMap.Deadlines;
               return (
                 <tr key={idx} className={task.done ? 'row-done' : ''}>
                   <td className="center-cell"><b>{idx + 1}</b></td>
-                  <td><b>{task.date || school.date}</b></td>
+                  <td><b>{displayDate}</b></td>
                   <td>
                     <div className="task-name-cell">
-                      <b>{task.name}</b>
+                      <b>{localizedTitle}</b>
                       {guide[1] && <small className="task-subtext">{guide[1]}</small>}
                     </div>
                   </td>
                   <td>
                     <span className={`print-badge badge-${task.tag}`}>
-                      {task.tag}
+                      {localizedTag || task.tag}
                     </span>
                   </td>
                   <td>
@@ -159,6 +170,32 @@ export function RoadmapPdfDocument({
             })}
           </tbody>
         </table>
+      </section>
+
+      {/* AI Personal Statement Draft Section */}
+      <section className="print-section print-essay-box" style={{marginBottom:'14px',padding:'10px 12px',border:'1px solid #cbd5e1',borderRadius:'8px',background:'#f8fafc',pageBreakInside:'avoid'}}>
+        <div style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'11.5px',fontWeight:700,color:'#0f172a',marginBottom:'6px'}}>
+          <Sparkle size={16} weight="fill" style={{color:'#1260f5'}} />
+          <span>{isKz ? 'AI Мотивациялық хат жобасы (Personal Statement Draft)' : isEng ? 'AI Personal Statement & Motivation Letter Draft' : 'AI-черновик мотивационного письма (Personal Statement Draft)'}</span>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',fontSize:'10px',lineHeight:'1.35',color:'#334155'}}>
+          <div style={{background:'#fff',padding:'6px 8px',borderRadius:'6px',border:'1px solid #e2e8f0'}}>
+            <b style={{color:'#0f172a',display:'block',marginBottom:'2px'}}>01. The Hook & Motivation:</b>
+            <span>{interests?.length ? `Specialization: ${interests.join(', ')}. Applying to ${school.name} represents a focused continuation of technical growth.` : `Applying to ${school.name} represents a focused continuation of technical growth.`}</span>
+          </div>
+          <div style={{background:'#fff',padding:'6px 8px',borderRadius:'6px',border:'1px solid #e2e8f0'}}>
+            <b style={{color:'#0f172a',display:'block',marginBottom:'2px'}}>02. Academic Preparation:</b>
+            <span>GPA {Number(gpa).toFixed(1)}/4.0{ielts ? ` · IELTS ${Number(ielts).toFixed(1)}` : ''}{ent ? ` · ЕНТ ${ent}` : ''}{sat ? ` · SAT ${sat}` : ''} with practical project work and rigorous problem solving.</span>
+          </div>
+          <div style={{background:'#fff',padding:'6px 8px',borderRadius:'6px',border:'1px solid #e2e8f0'}}>
+            <b style={{color:'#0f172a',display:'block',marginBottom:'2px'}}>03. Why {school.name}:</b>
+            <span>Strong academic faculty, modern research environment, and peer network in {school.bestProgramTitle || 'engineering'}.</span>
+          </div>
+          <div style={{background:'#fff',padding:'6px 8px',borderRadius:'6px',border:'1px solid #e2e8f0'}}>
+            <b style={{color:'#0f172a',display:'block',marginBottom:'2px'}}>04. Future Vision & ROI:</b>
+            <span>Aiming to lead impactful digital and engineering initiatives upon graduation.</span>
+          </div>
+        </div>
       </section>
 
       {/* Honest Uncertainty & Provenance */}
